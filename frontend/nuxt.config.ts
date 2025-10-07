@@ -13,4 +13,13 @@ export default defineNuxtConfig({
   pinia: {
     storesDirs: ["./stores/**"],
   },
+  app: {
+    head: {
+      title: "SITHS AfterSchool Attendance",
+      htmlAttrs: {
+        lang: "en",
+      },
+      link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    },
+  },
 });
