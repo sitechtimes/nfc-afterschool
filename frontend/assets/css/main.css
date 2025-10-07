@@ -34,3 +34,12 @@
   --depth: 1;
   --noise: 0;
 }
+
+.card {
+  border-width: 1px;
+  border-color: var(--color-base-300);
+}
+
+.badge {
+  border-radius: 0.5rem;
+}
