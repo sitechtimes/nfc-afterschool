@@ -1,0 +1,212 @@
+[
+  {
+    "date": "10/1/2025",
+    "activity": "FTC Robotics",
+    "student_name": "Liam Parker",
+    "student_email": "liamp45@nycstudent.net",
+    "student_cassid": 174812301
+  },
+  {
+    "date": "10/2/2025",
+    "activity": "FTC Robotics",
+    "student_name": "Mia Torres",
+    "student_email": "miat22@nycstudent.net",
+    "student_cassid": 174812302
+  },
+  {
+    "date": "10/3/2025",
+    "activity": "FTC Robotics",
+    "student_name": "Noah Rivera",
+    "student_email": "noahr18@nycstudent.net",
+    "student_cassid": 174812303
+  },
+  {
+    "date": "10/4/2025",
+    "activity": "Town Hall Meeting",
+    "student_name": "Olivia Scott",
+    "student_email": "olivias27@nycstudent.net",
+    "student_cassid": 174812304
+  },
+  {
+    "date": "10/5/2025",
+    "activity": "Town Hall Meeting",
+    "student_name": "Ethan Lee",
+    "student_email": "ethanl33@nycstudent.net",
+    "student_cassid": 174812305
+  },
+  {
+    "date": "10/6/2025",
+    "activity": "Town Hall Meeting",
+    "student_name": "Ava Chen",
+    "student_email": "avac12@nycstudent.net",
+    "student_cassid": 174812306
+  },
+  {
+    "date": "10/1/2025",
+    "activity": "Science Fair",
+    "student_name": "Lucas Martinez",
+    "student_email": "lucasm41@nycstudent.net",
+    "student_cassid": 174812307
+  },
+  {
+    "date": "10/2/2025",
+    "activity": "Science Fair",
+    "student_name": "Sophia Kim",
+    "student_email": "sophiak56@nycstudent.net",
+    "student_cassid": 174812308
+  },
+  {
+    "date": "10/3/2025",
+    "activity": "Science Fair",
+    "student_name": "Emma Davis",
+    "student_email": "emmad05@nycstudent.net",
+    "student_cassid": 174812309
+  },
+  {
+    "date": "10/4/2025",
+    "activity": "Math Olympiad",
+    "student_name": "Aiden Brown",
+    "student_email": "aidenb14@nycstudent.net",
+    "student_cassid": 174812310
+  },
+  {
+    "date": "10/5/2025",
+    "activity": "Math Olympiad",
+    "student_name": "Charlotte Hall",
+    "student_email": "charlotteh06@nycstudent.net",
+    "student_cassid": 174812311
+  },
+  {
+    "date": "10/6/2025",
+    "activity": "Math Olympiad",
+    "student_name": "Alice Johnson",
+    "student_email": "alicej25@nycstudent.net",
+    "student_cassid": 174812312
+  },
+  {
+    "date": "10/1/2025",
+    "activity": "Art Exhibition",
+    "student_name": "David Kim",
+    "student_email": "davidk77@nycstudent.net",
+    "student_cassid": 174812313
+  },
+  {
+    "date": "10/2/2025",
+    "activity": "Art Exhibition",
+    "student_name": "Ella Brown",
+    "student_email": "ellab09@nycstudent.net",
+    "student_cassid": 174812314
+  },
+  {
+    "date": "10/3/2025",
+    "activity": "Art Exhibition",
+    "student_name": "Liam Parker",
+    "student_email": "liamp45@nycstudent.net",
+    "student_cassid": 174812315
+  },
+  {
+    "date": "10/4/2025",
+    "activity": "Debate Club",
+    "student_name": "Mia Torres",
+    "student_email": "miat22@nycstudent.net",
+    "student_cassid": 174812316
+  },
+  {
+    "date": "10/5/2025",
+    "activity": "Debate Club",
+    "student_name": "Noah Rivera",
+    "student_email": "noahr18@nycstudent.net",
+    "student_cassid": 174812317
+  },
+  {
+    "date": "10/6/2025",
+    "activity": "Debate Club",
+    "student_name": "Olivia Scott",
+    "student_email": "olivias27@nycstudent.net",
+    "student_cassid": 174812318
+  },
+  {
+    "date": "10/1/2025",
+    "activity": "Photography Club",
+    "student_name": "Ethan Lee",
+    "student_email": "ethanl33@nycstudent.net",
+    "student_cassid": 174812319
+  },
+  {
+    "date": "10/2/2025",
+    "activity": "Photography Club",
+    "student_name": "Ava Chen",
+    "student_email": "avac12@nycstudent.net",
+    "student_cassid": 174812320
+  },
+  {
+    "date": "10/3/2025",
+    "activity": "Photography Club",
+    "student_name": "Lucas Martinez",
+    "student_email": "lucasm41@nycstudent.net",
+    "student_cassid": 174812321
+  },
+  {
+    "date": "10/4/2025",
+    "activity": "Music Rehearsal",
+    "student_name": "Sophia Kim",
+    "student_email": "sophiak56@nycstudent.net",
+    "student_cassid": 174812322
+  },
+  {
+    "date": "10/5/2025",
+    "activity": "Music Rehearsal",
+    "student_name": "Emma Davis",
+    "student_email": "emmad05@nycstudent.net",
+    "student_cassid": 174812323
+  },
+  {
+    "date": "10/6/2025",
+    "activity": "Music Rehearsal",
+    "student_name": "Aiden Brown",
+    "student_email": "aidenb14@nycstudent.net",
+    "student_cassid": 174812324
+  },
+  {
+    "date": "10/1/2025",
+    "activity": "Swimming Practice",
+    "student_name": "Charlotte Hall",
+    "student_email": "charlotteh06@nycstudent.net",
+    "student_cassid": 174812325
+  },
+  {
+    "date": "10/2/2025",
+    "activity": "Swimming Practice",
+    "student_name": "Alice Johnson",
+    "student_email": "alicej25@nycstudent.net",
+    "student_cassid": 174812326
+  },
+  {
+    "date": "10/3/2025",
+    "activity": "Swimming Practice",
+    "student_name": "David Kim",
+    "student_email": "davidk77@nycstudent.net",
+    "student_cassid": 174812327
+  },
+  {
+    "date": "10/4/2025",
+    "activity": "Football Practice",
+    "student_name": "Ella Brown",
+    "student_email": "ellab09@nycstudent.net",
+    "student_cassid": 174812328
+  },
+  {
+    "date": "10/5/2025",
+    "activity": "Football Practice",
+    "student_name": "Liam Parker",
+    "student_email": "liamp45@nycstudent.net",
+    "student_cassid": 174812329
+  },
+  {
+    "date": "10/6/2025",
+    "activity": "Football Practice",
+    "student_name": "Mia Torres",
+    "student_email": "miat22@nycstudent.net",
+    "student_cassid": 174812330
+  }
+]
