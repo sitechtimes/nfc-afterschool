@@ -81,12 +81,16 @@
             <div class="card-actions">
               <form
                 class="w-full"
-                @submit.prevent="handleModal(studentSearch, 'student')"
+                @submit.prevent="
+                  handleModal(studentSearch, 'student');
+                  studentSearchInputRef.blur();
+                "
               >
                 <input
                   v-model="studentSearch"
                   type="search"
-                  class="input bg-base-200"
+                  ref="studentSearchInputRef"
+                  class="input w-full bg-base-200"
                   placeholder="Search student name/email/cassid"
                 />
               </form>
@@ -120,11 +124,12 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const showDataModal = ref(false);
 const selectedModalSearch = ref("");
 const studentSearch = ref("");
 const searchError = ref("");
+const studentSearchInputRef = ref();
 const activities = [
   "FTC Robotics",
   "Town Hall Meeting",
@@ -138,7 +143,7 @@ const activities = [
   "Football Practice",
 ];
 
-function handleModal(searchString, searchType) {
+function handleModal(searchString: string, searchType: string) {
   //console.log(searchString, searchType);
   if (searchType === "student" && searchString === "") {
     searchError.value = "Please enter name/email/cassid of student";
@@ -146,7 +151,6 @@ function handleModal(searchString, searchType) {
   }
   searchError.value = "";
   //ONCE TYPESCRIPT WORKS ADD SOMETHING TO MAKE SURE U CAN SEARCH FOR SPECIFICALLY TODAY
-  //searcher bc it could be student OR activity records
   selectedModalSearch.value = searchString;
   showDataModal.value = true;
 }

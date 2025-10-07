@@ -25,17 +25,19 @@
   </dialog>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import data from "../assets/fake_data.json";
 const props = defineProps({ search: { type: String, required: true } });
-
 const filteredData = computed(() => {
   if (!props.search) return data;
   return data.filter(
     (item) =>
-      item.studentName?.toLowerCase().includes(props.search.toLowerCase()) ||
-      item.studentEmail?.toLowerCase().includes(props.search.toLowerCase()) ||
-      item.studentCASSID?.toLowerCase().includes(props.search.toLowerCase()) ||
+      item.student_name?.toLowerCase().includes(props.search.toLowerCase()) ||
+      item.student_email?.toLowerCase().includes(props.search.toLowerCase()) ||
+      item.student_cassid
+        ?.toString()
+        .toLowerCase()
+        .includes(props.search.toLowerCase()) ||
       item.activity?.toLowerCase().includes(props.search.toLowerCase())
   );
 });
