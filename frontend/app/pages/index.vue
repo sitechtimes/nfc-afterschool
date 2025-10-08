@@ -5,7 +5,7 @@
     @close="showDataModal = false"
   />
 
-  <div class="mainpage w-full">
+  <div class="mainpage p-4 w-full">
     <div class="header flex flex-col text-center gap-2 py-8">
       <h1 class="text-3xl font-bold">After-School Activity Attendence Logs</h1>
       <p class="max-w-1/2 mx-auto">
