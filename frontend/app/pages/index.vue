@@ -16,7 +16,7 @@
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
       <div class="lg:col-span-3">
-        <div class="space-y-6 card card-md overflow-x-auto">
+        <div class="space-y-1 card card-md overflow-x-auto">
           <div class="card-body">
             <div class="flex justify-between">
               <h2 class="card-title">Avatar Attendance Records</h2>
@@ -55,11 +55,21 @@
               </tbody>
             </table>
           </div>
+          <div class="p-5 col-span-1"> <!-- Add in manual upload fot student  -->
+              <div class=" card card-md">
+                <div class="card-body grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+                    <p>test</p>
+                  
+                </div>
+
+              </div>
+          </div>
         </div>
       </div>
       <div class="col-span-1">
         <div class="space-y-6 card card-md">
-          <div class="card-body">
+        <div class="card-body">
             <h2 class="card-title mb-4">
               <svg
                 class="h-[1em] opacity-50"
