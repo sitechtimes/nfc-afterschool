@@ -43,3 +43,11 @@
 .badge {
   border-radius: 0.5rem;
 }
+
+  transition: all;
+  transition-duration: 300ms;
+}
+
+.btn:hover {
+  opacity: 85%;
+}
