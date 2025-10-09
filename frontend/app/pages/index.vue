@@ -55,19 +55,24 @@
               </tbody>
             </table>
           </div>
-          <div class="p-5 col-span-1"> <!-- Add in manual upload fot student  -->
-              <div class=" card card-md">
-                <div class="card-body grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-                    <p>test</p>
-                  
-                </div>
-
-              </div>
-          </div>
         </div>
       </div>
       <div class="col-span-1">
+
+
+        <!-- Adding it in here -->
+         <div class="space-y-6 card card-md p-5">
+          <h1 class="card-title mb-4">Manual Student Input</h1>
+          <!-- Add button, when clicked pops up a box to enter all fields needed, Activity Date Student Name Student Email, No need for cassID -->
+           <button class="btn btn-outline btn-block"
+           @click="StudentManualInput()">
+            Enter Info
+           </button>
+         </div>
+
+
+
+
         <div class="space-y-6 card card-md">
         <div class="card-body">
             <h2 class="card-title mb-4">
@@ -152,6 +157,10 @@ const activities = [
   "Swimming Practice",
   "Football Practice",
 ];
+
+function StudentManualInput(){
+  console.log("Test")
+}
 
 function handleModal(searchString: string, searchType: string) {
   //console.log(searchString, searchType);
