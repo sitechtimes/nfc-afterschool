@@ -30,7 +30,6 @@
 <script setup lang="ts">
 import data from "../assets/fake_data.json";
 const props = defineProps({ searchParams: { type: Object, required: true } });
-console.log(props.searchParams);
 const filteredData = computed(() => {
   if (!props.searchParams) return data;
   return data.filter(
