@@ -138,6 +138,38 @@
                 >Search Records
               </button>
               <p class="text-error">{{ searchError }}</p>
+              <h2 class="text-center w-full text-3xl font-semibold">
+                Select Date
+              </h2>
+              <form
+                @submit.prevent
+                class="flex w-full justify-center items-center gap-2 relative border rounded-xl"
+              >
+                <div
+                  class="absolute inset-y-1 left-1 rounded-xl bg-primary/70 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] shadow-md"
+                  :class="
+                    isDateSelected
+                      ? 'translate-x-[calc(100%-1.9rem)] w-[53%]'
+                      : 'translate-x-0 w-[44%]'
+                  "
+                />
+                <div class="flex py-3 px-5 justify-around w-full">
+                  <button
+                    class="text-xl font-bold cursor-pointer"
+                    name="dateFilter"
+                    @click="isDateSelected = false"
+                  >
+                    No Date
+                  </button>
+                  <button
+                    class="text-xl font-bold cursor-pointer"
+                    name="dateFilter"
+                    @click="isDateSelected = true"
+                  >
+                    Select Date
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -156,6 +188,7 @@ const searchParams = ref({
   searchType: "",
   searchDate: "",
 });
+const isDateSelected = ref(false);
 
 const activities = [
   "FTC Robotics",
