@@ -68,6 +68,7 @@
            @click="StudentManualInput()">
             Enter Info
            </button>
+          <EnterStudentInfo/>
          </div>
 
 
@@ -140,6 +141,7 @@
 </template>
 
 <script setup lang="ts">
+import EnterStudentInfo from '~/components/EnterStudentInfo.vue';
 const showDataModal = ref(false);
 const selectedModalSearch = ref("");
 const studentSearch = ref("");
@@ -160,6 +162,7 @@ const activities = [
 
 function StudentManualInput(){
   console.log("Test")
+  this.$dialog.show('manual-student-entry')
 }
 
 function handleModal(searchString: string, searchType: string) {
