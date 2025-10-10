@@ -167,26 +167,23 @@
                   </button>
                 </div>
               </form>
-              <transition name="fade">
-                <div v-if="isDateSelected" class="card w-full p-6 space-y-4">
-                  <label class="text-sm font-semibold text-base-content/70">
-                    Filter by date
-                  </label>
-                  <input
-                    v-model="selectedDate"
-                    type="date"
-                    class="input input-bordered w-full"
-                  />
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-ghost"
-                    @click="selectedDate = ''"
-                  >
-                    Clear date
-                  </button>
-                </div>
-              </transition>
-              <div></div>
+              <div v-if="isDateSelected" class="card w-full p-6 space-y-4">
+                <label class="text-sm font-semibold text-base-content/70">
+                  Filter by date
+                </label>
+                <input
+                  v-model="selectedDate"
+                  type="date"
+                  class="input input-bordered w-full"
+                />
+                <button
+                  type="button"
+                  class="btn btn-sm btn-ghost"
+                  @click="selectedDate = ''"
+                >
+                  Clear date
+                </button>
+              </div>
               <p
                 v-if="!isDateSelected"
                 class="text-sm text-center text-base-content/70"
