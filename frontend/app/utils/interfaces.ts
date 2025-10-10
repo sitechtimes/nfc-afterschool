@@ -5,3 +5,8 @@ export interface ScanInstance {
   student_email: string;
   student_cassid: Int16Array;
 }
+
+export interface User {
+  username: string;
+  role: string;
+}
