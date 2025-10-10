@@ -3,17 +3,16 @@ export const useUserStore = defineStore("user", () => {
         username: "",
         role: "",
     });
-    const isAuthenticated = ref(false);
 
     function setUser(userData: User) {
         user.value = userData;
-        isAuthenticated.value = !!userData;
-        localStorage.setItem("user", user.value.username);
+        localStorage.setItem("user", JSON.stringify(user.value));
     }
 
     function getUser() {
         const token = localStorage.getItem("user");
         if (token !== null && user.value === null) {
+            JSON.parse(token);
             setUser(token);
         } else if (token === null) {
             clearUser();
@@ -21,13 +20,12 @@ export const useUserStore = defineStore("user", () => {
     }
     function clearUser() {
         user.value = null;
-        isAuthenticated.value = false;
+        navigateTo("/login");
         localStorage.clear();
     }
 
     return {
         user,
-        isAuthenticated,
         setUser,
         clearUser,
         getUser,

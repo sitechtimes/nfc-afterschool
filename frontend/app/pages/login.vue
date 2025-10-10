@@ -50,6 +50,7 @@ const form = ref<{ username: string; password: string }>({
 });
 
 function handleLogin() {
-    userStore.setUser({ username: "admin", role: "admin" });
+    userStore.setUser({ username: "admin", role: "supervisor" });
+    navigateTo("/");
 }
 </script>

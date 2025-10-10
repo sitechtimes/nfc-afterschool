@@ -10,10 +10,10 @@ import { useUserStore } from "./stores/userStore";
 const userStore = useUserStore();
 
 function calls() {
-    userStore.getUser();
-    console.log(localStorage.getItem("user"));
+    //   userStore.getUser();
 }
 onMounted(() => {
+    userStore.getUser();
     setInterval(() => {
         calls();
     }, 3000);
