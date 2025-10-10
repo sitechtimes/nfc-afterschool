@@ -1,7 +1,7 @@
 <template>
   <attendanceModal
     v-if="showDataModal"
-    :search="selectedModalSearch"
+    :searchParams="searchParams"
     @close="showDataModal = false"
   />
 
@@ -37,7 +37,13 @@
                   <th>{{ activity }}</th>
                   <td>
                     <button
-                      @click="handleModal(activity, 'activity')"
+                      @click="
+                        handleModal({
+                          searchString: activity,
+                          searchType: 'activity',
+                          searchDate: '',
+                        })
+                      "
                       class="btn btn-sm btn-outline btn-wide"
                     >
                       Click to view
@@ -45,7 +51,13 @@
                   </td>
                   <td>
                     <button
-                      @click="handleModal(activity, 'activity')"
+                      @click="
+                        handleModal({
+                          searchString: activity,
+                          searchType: 'activity',
+                          searchDate: '',
+                        })
+                      "
                       class="btn btn-sm btn-outline btn-wide"
                     >
                       Click to view
@@ -82,7 +94,11 @@
               <form
                 class="w-full"
                 @submit.prevent="
-                  handleModal(studentSearch, 'student');
+                  handleModal({
+                    searchString: studentSearch,
+                    searchType: 'student',
+                    searchDate: '',
+                  });
                   studentSearchInputRef.blur();
                 "
               >
@@ -95,7 +111,13 @@
                 />
               </form>
               <button
-                @click="handleModal(studentSearch, 'student')"
+                @click="
+                  handleModal({
+                    searchString: studentSearch,
+                    searchType: 'student',
+                    searchDate: '',
+                  })
+                "
                 class="btn btn-outline btn-block"
               >
                 <svg
@@ -126,10 +148,15 @@
 
 <script setup lang="ts">
 const showDataModal = ref(false);
-const selectedModalSearch = ref("");
 const studentSearch = ref("");
 const searchError = ref("");
 const studentSearchInputRef = ref();
+const searchParams = ref({
+  searchString: "",
+  searchType: "",
+  searchDate: "",
+});
+
 const activities = [
   "FTC Robotics",
   "Town Hall Meeting",
@@ -143,15 +170,13 @@ const activities = [
   "Football Practice",
 ];
 
-function handleModal(searchString: string, searchType: string) {
-  //console.log(searchString, searchType);
-  if (searchType === "student" && searchString === "") {
+function handleModal(params: SearchParams) {
+  if (params.searchType === "student" && params.searchString === "") {
     searchError.value = "Please enter name/email/cassid of student";
     return;
   }
   searchError.value = "";
-  //ONCE TYPESCRIPT WORKS ADD SOMETHING TO MAKE SURE U CAN SEARCH FOR SPECIFICALLY TODAY
-  selectedModalSearch.value = searchString;
+  searchParams.value = params;
   showDataModal.value = true;
 }
 </script>
