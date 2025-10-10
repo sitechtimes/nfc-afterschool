@@ -146,7 +146,7 @@
                 class="flex w-full justify-center items-center gap-2 relative border rounded-xl overflow-hidden"
               >
                 <div
-                  class="absolute inset-y-1 left-0 bg-primary/70 transition-transform duration-300 ease-in-out w-1/2 rounded-xl shadow-md"
+                  class="absolute inset-y-0 left-0 bg-primary/70 transition-transform duration-300 ease-in-out w-1/2 rounded-xl shadow-md"
                   :class="isDateSelected ? 'translate-x-full' : 'translate-x-0'"
                 ></div>
 
