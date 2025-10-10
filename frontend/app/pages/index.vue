@@ -143,27 +143,24 @@
               </h2>
               <form
                 @submit.prevent
-                class="flex w-full justify-center items-center gap-2 relative border rounded-xl"
+                class="flex w-full justify-center items-center gap-2 relative border rounded-xl overflow-hidden"
               >
                 <div
-                  class="absolute inset-y-1 left-1 rounded-xl bg-primary/70 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] shadow-md"
-                  :class="
-                    isDateSelected
-                      ? 'translate-x-[calc(100%-1.9rem)] w-[53%]'
-                      : 'translate-x-0 w-[44%]'
-                  "
-                />
-                <div class="flex py-3 px-5 justify-around w-full">
+                  class="absolute inset-y-1 left-0 bg-primary/70 transition-transform duration-300 ease-in-out w-1/2 rounded-xl shadow-md"
+                  :class="isDateSelected ? 'translate-x-full' : 'translate-x-0'"
+                ></div>
+
+                <div class="flex py-3 px-2 justify-around w-full relative z-10">
                   <button
-                    class="text-xl font-bold cursor-pointer"
-                    name="dateFilter"
+                    type="button"
+                    class="flex-1 text-xl font-bold cursor-pointer text-center"
                     @click="isDateSelected = false"
                   >
                     No Date
                   </button>
                   <button
-                    class="text-xl font-bold cursor-pointer"
-                    name="dateFilter"
+                    type="button"
+                    class="flex-1 text-xl font-bold cursor-pointer text-center"
                     @click="isDateSelected = true"
                   >
                     Select Date
