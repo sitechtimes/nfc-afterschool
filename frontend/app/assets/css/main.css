@@ -36,19 +36,17 @@
 }
 
 .card {
-  border-width: 1px;
-  border-color: var(--color-base-300);
+  @apply border-[1px] border-base-300;
 }
 
 .badge {
-  border-radius: 0.5rem;
+  @apply rounded-lg;
 }
 
 .btn {
-  transition: all;
-  transition-duration: 300ms;
+  @apply transition-all duration-300;
 }
 
 .btn:hover {
-  opacity: 85%;
+  @apply opacity-85;
 }
