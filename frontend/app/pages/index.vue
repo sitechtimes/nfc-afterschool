@@ -97,7 +97,7 @@
                   handleModal({
                     searchString: studentSearch,
                     searchType: 'student',
-                    searchDate: '',
+                    searchDate: selectedDate,
                   });
                   studentSearchInputRef.blur();
                 "
@@ -115,7 +115,7 @@
                   handleModal({
                     searchString: studentSearch,
                     searchType: 'student',
-                    searchDate: '',
+                    searchDate: selectedDate,
                   })
                 "
                 class="btn btn-outline btn-block"
@@ -138,7 +138,7 @@
                 >Search Records
               </button>
               <p class="text-error">{{ searchError }}</p>
-              <h2 class="text-center w-full text-3xl font-semibold">
+              <h2 class="text-center w-full text-lg font-semibold">
                 Select Date
               </h2>
               <form
@@ -150,7 +150,7 @@
                   :class="isDateSelected ? 'translate-x-full' : 'translate-x-0'"
                 ></div>
 
-                <div class="flex py-3 px-2 justify-around w-full relative z-10">
+                <div class="flex py-1 justify-around w-full relative z-10">
                   <button
                     type="button"
                     class="flex-1 text-xl font-bold cursor-pointer text-center"
@@ -171,18 +171,20 @@
                 <label class="text-sm font-semibold text-base-content/70">
                   Filter by date
                 </label>
-                <input
-                  v-model="selectedDate"
-                  type="date"
-                  class="input input-bordered w-full"
-                />
-                <button
-                  type="button"
-                  class="btn btn-sm btn-ghost"
-                  @click="selectedDate = ''"
-                >
-                  Clear date
-                </button>
+                <div class="w-full flex gap-2">
+                  <input
+                    v-model="selectedDate"
+                    type="date"
+                    class="input input-bordered"
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-ghost"
+                    @click="selectedDate = ''"
+                  >
+                    Clear date
+                  </button>
+                </div>
               </div>
               <p
                 v-if="!isDateSelected"
@@ -231,6 +233,9 @@ function handleModal(params: SearchParams) {
   }
   searchError.value = "";
   searchParams.value = params;
+  if (!isDateSelected.value) {
+    searchParams.value.searchDate = "";
+  }
   showDataModal.value = true;
 }
 </script>
