@@ -47,7 +47,7 @@
                         handleModal({
                           searchString: activity,
                           searchType: 'activity',
-                          searchDate: '',
+                          searchDate: selectedDate,
                         })
                       "
                       class="btn btn-sm btn-outline btn-wide"
@@ -61,7 +61,7 @@
                         handleModal({
                           searchString: activity,
                           searchType: 'activity',
-                          searchDate: '',
+                          searchDate: 'today',
                         })
                       "
                       class="btn btn-sm btn-outline btn-wide"
@@ -75,7 +75,7 @@
           </div>
         </div>
       </div>
-      <div class="col-span-1">
+      <div class="col-span-1 flex flex-col gap-6">
         <div class="space-y-6 card card-md">
           <div class="card-body">
             <h2 class="card-title mb-4">
@@ -87,7 +87,7 @@
             </h2>
             <div class="card-actions">
               <form
-                class="w-full"
+                class="w-full flex flex-col gap-2"
                 @submit.prevent="
                   handleModal({
                     searchString: studentSearch,
@@ -97,12 +97,16 @@
                   studentSearchInputRef.blur();
                 "
               >
+                <label class="sr-only" for="studentSearchInputRef"
+                  >Search by student name or email</label
+                >
                 <input
                   v-model="studentSearch"
                   type="search"
+                  id="studentSearchInputRef"
                   ref="studentSearchInputRef"
                   class="input w-full bg-base-200"
-                  placeholder="Search student name/email/cassid"
+                  placeholder="Search student name/email"
                 />
               </form>
               <button
@@ -122,9 +126,13 @@
                 />Search Records
               </button>
               <p class="text-error">{{ searchError }}</p>
-              <h2 class="text-center w-full text-lg font-semibold">
-                Select Date
-              </h2>
+            </div>
+          </div>
+        </div>
+        <div class="card card-md space-y-6">
+          <div class="card-body">
+            <h2 class="card-title">Select Date</h2>
+            <div class="card-actions">
               <form
                 @submit.prevent
                 class="flex w-full justify-center items-center gap-2 relative border rounded-xl overflow-hidden"
@@ -161,13 +169,6 @@
                     type="date"
                     class="input input-bordered"
                   />
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-ghost"
-                    @click="selectedDate = ''"
-                  >
-                    Clear date
-                  </button>
                 </div>
               </div>
               <p
@@ -215,14 +216,26 @@ const userStore = useUserStore();
 
 function handleModal(params: SearchParams) {
   if (params.searchType === "student" && params.searchString === "") {
-    searchError.value = "Please enter name/email/cassid of student";
+    searchError.value = "Please enter name/email of student";
     return;
   }
   searchError.value = "";
-  searchParams.value = params;
-  if (!isDateSelected.value) {
-    searchParams.value.searchDate = "";
+  if (!isDateSelected.value && params.searchDate !== "today") {
+    params.searchDate = "";
+  } else if (params.searchDate === "today") {
+    params.searchDate = new Date().toLocaleDateString("en-US");
+  } else {
+    const [year, month, day] = params.searchDate.split("-");
+    if (year && month && day) {
+      params.searchDate = new Date(
+        parseInt(year),
+        parseInt(month) - 1,
+        parseInt(day)
+      ).toLocaleDateString("en-US");
+    }
   }
+  searchParams.value = params;
+
   showDataModal.value = true;
 }
 </script>

@@ -30,30 +30,23 @@
 <script setup lang="ts">
 import data from "../assets/fake_data.json";
 const props = defineProps({ searchParams: { type: Object, required: true } });
-console.log(props.searchParams.searchDate);
 const filteredData = computed(() => {
   if (!props.searchParams) return data;
   return data.filter(
     (item) =>
-      (props.searchParams.searchType === "student"
-        ? item.student_name
-            ?.toLowerCase()
-            .includes(props.searchParams.searchString.toLowerCase())
-        : false) ||
-      (props.searchParams.searchType === "student"
-        ? item.student_email
-            ?.toLowerCase()
-            .includes(props.searchParams.searchString.toLowerCase())
-        : false) ||
-      // item.student_cassid
-      //   ?.toString()
-      //   .toLowerCase()
-      //   .includes(props.search.toLowerCase()) ||
-      (props.searchParams.searchType === "activity"
-        ? item.activity
-            ?.toLowerCase()
-            .includes(props.searchParams.searchString.toLowerCase())
-        : false)
+      (props.searchParams.searchDate === "" ||
+        item.date === props.searchParams.searchDate) &&
+      (props.searchParams.searchType !== "student" ||
+        item.student_name
+          ?.toLowerCase()
+          .includes(props.searchParams.searchString.toLowerCase()) ||
+        item.student_email
+          ?.toLowerCase()
+          .includes(props.searchParams.searchString.toLowerCase())) &&
+      (props.searchParams.searchType !== "activity" ||
+        item.activity
+          ?.toLowerCase()
+          .includes(props.searchParams.searchString.toLowerCase()))
   );
 });
 </script>
