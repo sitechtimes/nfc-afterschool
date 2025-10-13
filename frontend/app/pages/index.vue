@@ -63,11 +63,6 @@
         <!-- Adding it in here -->
          <div class="space-y-6 card card-md p-5">
           <h1 class="card-title mb-4">Manual Student Input</h1>
-          <!-- Add button, when clicked pops up a box to enter all fields needed, Activity Date Student Name Student Email, No need for cassID -->
-           <button class="btn btn-outline btn-block"
-           @click="StudentManualInput()">
-            Enter Info
-           </button>
           <EnterStudentInfo/>
          </div>
 
@@ -142,7 +137,6 @@
 
 <script setup lang="ts">
 import EnterStudentInfo from '../components/EnterStudentInfo.vue';
-import { ref } from 'vue';
 const showDataModal = ref(false);
 const selectedModalSearch = ref("");
 const studentSearch = ref("");
@@ -161,10 +155,7 @@ const activities = [
   "Football Practice",
 ];
 
-function StudentManualInput(){
-  console.log("Test")
-  this.$dialog.show('manual-student-entry')
-}
+
 
 function handleModal(searchString: string, searchType: string) {
   //console.log(searchString, searchType);
