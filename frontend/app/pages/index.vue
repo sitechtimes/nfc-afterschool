@@ -141,7 +141,8 @@
 </template>
 
 <script setup lang="ts">
-import EnterStudentInfo from '~/components/EnterStudentInfo.vue';
+import EnterStudentInfo from '../components/EnterStudentInfo.vue';
+import { ref } from 'vue';
 const showDataModal = ref(false);
 const selectedModalSearch = ref("");
 const studentSearch = ref("");
