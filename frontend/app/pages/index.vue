@@ -5,7 +5,13 @@
     @close="showDataModal = false"
   />
 
-  <div class="mainpage w-full">
+  <div class="p-4 w-full">
+    <button
+      @click="userStore.clearUser"
+      class="absolute top-0 left-0 w-10 btn btn-primary"
+    >
+      test logout
+    </button>
     <div class="header flex flex-col text-center gap-2 py-8">
       <h1 class="text-3xl font-bold">After-School Activity Attendence Logs</h1>
       <p class="max-w-1/2 mx-auto">
@@ -73,22 +79,11 @@
         <div class="space-y-6 card card-md">
           <div class="card-body">
             <h2 class="card-title mb-4">
-              <svg
+              <img
+                src="/icons/search.svg"
                 class="h-[1em] opacity-50"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-              >
-                <g
-                  stroke-linejoin="round"
-                  stroke-linecap="round"
-                  stroke-width="2.5"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <path d="m21 21-4.3-4.3"></path>
-                </g></svg
-              >Search Student
+                alt="Search icon"
+              />Search Student
             </h2>
             <div class="card-actions">
               <form
@@ -120,22 +115,11 @@
                 "
                 class="btn btn-outline btn-block"
               >
-                <svg
+                <img
+                  src="/icons/search.svg"
                   class="h-[1em] opacity-50"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <g
-                    stroke-linejoin="round"
-                    stroke-linecap="round"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke="currentColor"
-                  >
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.3-4.3"></path>
-                  </g></svg
-                >Search Records
+                  alt="Search icon"
+                />Search Records
               </button>
               <p class="text-error">{{ searchError }}</p>
               <h2 class="text-center w-full text-lg font-semibold">
@@ -201,6 +185,8 @@
 </template>
 
 <script setup lang="ts">
+import { useUserStore } from "~/stores/userStore";
+
 const showDataModal = ref(false);
 const studentSearch = ref("");
 const searchError = ref("");
@@ -225,6 +211,7 @@ const activities = [
   "Swimming Practice",
   "Football Practice",
 ];
+const userStore = useUserStore();
 
 function handleModal(params: SearchParams) {
   if (params.searchType === "student" && params.searchString === "") {

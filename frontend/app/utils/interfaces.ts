@@ -11,3 +11,7 @@ export interface SearchParams {
   searchType: string;
   searchDate: string;
 }
+export interface User {
+  username: string;
+  role: string;
+}
