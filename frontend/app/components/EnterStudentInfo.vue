@@ -15,6 +15,17 @@
     >
       <form method="dialog" @submit.prevent="NeedDataToClose" class="flex flex-col gap-4">
         <p>
+          <label class="flex flex-col text-gray-700"> Activity </label>
+          <select name="ActivityChoice" v-model="Activity" id="AC">
+      
+                <option v-for="activity in ActivityList" :key="activity" :value="activity">
+                {{ activity }}
+
+                </option>
+
+           
+
+          </select>
           <label class="flex flex-col text-gray-700">
             Name:
             <input
@@ -44,7 +55,7 @@
             type="button"
             class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md cursor-pointer"
             @click="CloseWithoutData"
-            value="Close 2"
+            value="Close"
           />
         </div>
       </form>
@@ -68,15 +79,30 @@ const Today = new Date();
 const TodayFormatted = `${Today.getMonth() + 1}/${Today.getDate()}/${Today.getFullYear()}`;
 const IsEnterInfoScreenOpen = ref(false);
 const dialog = ref(null);
+const Activity = ref("");
 const studentName = ref("");
 const studentEmail = ref("");
-
+const ActivityList = [
+  "FTC Robotics",
+  "Town Hall Meeting",
+  "Science Fair",
+  "Math Olympiad",
+  "Art Exhibition",
+  "Debate Club",
+  "Photography Club",
+  "Music Rehearsal",
+  "Swimming Practice",
+  "Football Practice"
+];
 function OpenInfoEnterPage() {
   dialog.value.showModal();
   IsEnterInfoScreenOpen.value = true;
 }
 
 function CloseWithoutData() {
+  studentName.value = ""
+  studentEmail.value = ""
+   Activity.value = ""
   dialog.value.close();
   IsEnterInfoScreenOpen.value = false;
 }
@@ -84,11 +110,16 @@ function CloseWithoutData() {
 function NeedDataToClose() {
   console.log("Student Name:", studentName.value);
   console.log("Student Email:", studentEmail.value);
+  console.log(Activity.value)
+  console.log(TodayFormatted)
   studentName.value = ""
   studentEmail.value = ""
+  Activity.value = ""
+
   IsEnterInfoScreenOpen.value = false;
   dialog.value.close();
-  /* makes blur go away but keps the form up  */
+
+ 
 }
 
 
