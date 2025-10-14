@@ -76,7 +76,7 @@
         </div>
       </div>
       <div class="col-span-1 flex flex-col gap-6">
-        <div class="space-y-6 card card-md">
+        <div class="space-y-6 card card-md mb-1">
           <div class="card-body">
             <h2 class="card-title mb-4">
               <img
@@ -147,15 +147,17 @@
                     type="button"
                     class="flex-1 text-xl font-bold cursor-pointer text-center"
                     @click="isDateSelected = false"
+                    :class="!isDateSelected ? 'text-base-200' : ''"
                   >
-                    No Date
+                    None
                   </button>
                   <button
                     type="button"
                     class="flex-1 text-xl font-bold cursor-pointer text-center"
                     @click="isDateSelected = true"
+                    :class="isDateSelected ? 'text-base-200' : ''"
                   >
-                    Select Date
+                    Select
                   </button>
                 </div>
               </form>
