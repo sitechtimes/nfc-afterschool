@@ -38,7 +38,7 @@
           <label class="flex flex-col text-gray-700">
            	Student Email:
             <input
-              type="text"
+              type="email"
               v-model="studentEmail"
               required
               class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -108,10 +108,14 @@ function CloseWithoutData() {
 }
 /* Go over with ben which button would work better for the project | Comment so I dont forget */
 function NeedDataToClose() {
-  console.log("Student Name:", studentName.value);
-  console.log("Student Email:", studentEmail.value);
-  console.log(Activity.value)
-  console.log(TodayFormatted)
+  const studentData = {
+  name: studentName.value,
+  email: studentEmail.value,
+  activity: Activity.value,
+  date: TodayFormatted
+};
+console.log(studentData);
+
   studentName.value = ""
   studentEmail.value = ""
   Activity.value = ""
