@@ -5,7 +5,13 @@
     @close="showDataModal = false"
   />
 
-  <div class="mainpage w-full">
+  <div class="p-4 w-full">
+    <button
+      @click="userStore.clearUser"
+      class="absolute top-0 left-0 w-10 btn btn-primary"
+    >
+      test logout
+    </button>
     <div class="header flex flex-col text-center gap-2 py-8">
       <h1 class="text-3xl font-bold">After-School Activity Attendence Logs</h1>
       <p class="max-w-1/2 mx-auto">
@@ -72,30 +78,16 @@
         <div class="space-y-6 card card-md">
         <div class="card-body">
             <h2 class="card-title mb-4">
-              <svg
+              <img
+                src="/icons/search.svg"
                 class="h-[1em] opacity-50"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-              >
-                <g
-                  stroke-linejoin="round"
-                  stroke-linecap="round"
-                  stroke-width="2.5"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <path d="m21 21-4.3-4.3"></path>
-                </g></svg
-              >Search Student
+                alt="Search icon"
+              />Search Student
             </h2>
             <div class="card-actions">
               <form
                 class="w-full"
-                @submit.prevent="
-                  handleModal(studentSearch, 'student');
-                  studentSearchInputRef.blur();
-                "
+                @submit.prevent="handleModal(studentSearch, 'student')"
               >
                 <input
                   v-model="studentSearch"
@@ -109,22 +101,11 @@
                 @click="handleModal(studentSearch, 'student')"
                 class="btn btn-outline btn-block"
               >
-                <svg
+                <img
+                  src="/icons/search.svg"
                   class="h-[1em] opacity-50"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <g
-                    stroke-linejoin="round"
-                    stroke-linecap="round"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke="currentColor"
-                  >
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.3-4.3"></path>
-                  </g></svg
-                >Search Records
+                  alt="Search icon"
+                />Search Records
               </button>
               <p class="text-error">{{ searchError }}</p>
             </div>
@@ -137,6 +118,8 @@
 
 <script setup lang="ts">
 import EnterStudentInfo from '../components/EnterStudentInfo.vue';
+import { useUserStore } from "~/stores/userStore";
+
 const showDataModal = ref(false);
 const selectedModalSearch = ref("");
 const studentSearch = ref("");
@@ -156,8 +139,10 @@ const activities = [
 ];
 
 
+const userStore = useUserStore();
 
-function handleModal(searchString: string, searchType: string) {
+function handleModal(searchString: string, searchType: "activity" | "student") {
+  studentSearchInputRef.value.blur();
   //console.log(searchString, searchType);
   if (searchType === "student" && searchString === "") {
     searchError.value = "Please enter name/email/cassid of student";
