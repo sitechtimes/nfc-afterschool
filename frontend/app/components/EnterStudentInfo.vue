@@ -5,23 +5,26 @@
       class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
     ></div>
 
-
     <dialog
       ref="dialog"
       id="dialog"
-      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-             z-50 bg-white rounded-lg p-6 shadow-xl w-[90%] max-w-md"
-
+      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-white rounded-lg p-6 shadow-xl w-[90%] max-w-md"
     >
-      <form method="dialog" @submit.prevent="NeedDataToClose" class="flex flex-col gap-4">
+      <form
+        method="dialog"
+        @submit.prevent="NeedDataToClose"
+        class="flex flex-col gap-4"
+      >
         <p>
           <label class="flex flex-col text-gray-700"> Activity </label>
           <select name="ActivityChoice" v-model="Activity" id="AC">
-      
-                <option v-for="activity in ActivityList" :key="activity" :value="activity">
-                {{ activity }}
-
-                </option>
+            <option
+              v-for="activity in ActivityList"
+              :key="activity"
+              :value="activity"
+            >
+              {{ activity }}
+            </option>
           </select>
           <label class="flex flex-col text-gray-700">
             Name:
@@ -33,7 +36,7 @@
             />
           </label>
           <label class="flex flex-col text-gray-700">
-           	Student Email:
+            Student Email:
             <input
               type="email"
               v-model="studentEmail"
@@ -86,7 +89,7 @@ const ActivityList = [
   "Photography Club",
   "Music Rehearsal",
   "Swimming Practice",
-  "Football Practice"
+  "Football Practice",
 ];
 function OpenInfoEnterPage() {
   dialog.value.showModal();
@@ -94,30 +97,25 @@ function OpenInfoEnterPage() {
 }
 
 function CloseWithoutData() {
-  studentName.value = ""
-  studentEmail.value = ""
-  Activity.value = ""
+  studentName.value = "";
+  studentEmail.value = "";
+  Activity.value = "";
   dialog.value.close();
   IsEnterInfoScreenOpen.value = false;
 }
 function NeedDataToClose() {
-  studentName.value = studentName.value.trim()
+  studentName.value = studentName.value.trim();
   const studentData = {
-  name: studentName.value,
-  email: studentEmail.value,
-  activity: Activity.value,
-  date: todayFormatted
-};
+    name: studentName.value,
+    email: studentEmail.value,
+    activity: Activity.value,
+    date: todayFormatted,
+  };
 
-
-  studentName.value = ""
-  studentEmail.value = ""
-  Activity.value = ""
+  studentName.value = "";
+  studentEmail.value = "";
+  Activity.value = "";
   IsEnterInfoScreenOpen.value = false;
   dialog.value.close();
-
- 
 }
-
-
 </script>
