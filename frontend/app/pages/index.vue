@@ -64,17 +64,10 @@
         </div>
       </div>
       <div class="col-span-1">
-
-
-        <!-- Adding it in here -->
          <div class="space-y-6 card card-md p-5">
-          <h1 class="card-title mb-4">Manual Student Input</h1>
+          <h2 class="card-title mb-4">Manual Student Input</h2>
           <EnterStudentInfo/>
          </div>
-
-
-
-
         <div class="space-y-6 card card-md">
         <div class="card-body">
             <h2 class="card-title mb-4">

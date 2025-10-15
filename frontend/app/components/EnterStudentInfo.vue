@@ -22,9 +22,6 @@
                 {{ activity }}
 
                 </option>
-
-           
-
           </select>
           <label class="flex flex-col text-gray-700">
             Name:
@@ -71,12 +68,9 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
-
-
-const Today = new Date();
-const TodayFormatted = `${Today.getMonth() + 1}/${Today.getDate()}/${Today.getFullYear()}`;
+<script setup lang="ts">
+const today = new Date();
+const todayFormatted = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
 const IsEnterInfoScreenOpen = ref(false);
 const dialog = ref(null);
 const Activity = ref("");
@@ -102,24 +96,23 @@ function OpenInfoEnterPage() {
 function CloseWithoutData() {
   studentName.value = ""
   studentEmail.value = ""
-   Activity.value = ""
+  Activity.value = ""
   dialog.value.close();
   IsEnterInfoScreenOpen.value = false;
 }
-/* Go over with ben which button would work better for the project | Comment so I dont forget */
 function NeedDataToClose() {
+  studentName.value = studentName.value.trim()
   const studentData = {
   name: studentName.value,
   email: studentEmail.value,
   activity: Activity.value,
-  date: TodayFormatted
+  date: todayFormatted
 };
-console.log(studentData);
+
 
   studentName.value = ""
   studentEmail.value = ""
   Activity.value = ""
-
   IsEnterInfoScreenOpen.value = false;
   dialog.value.close();
 
