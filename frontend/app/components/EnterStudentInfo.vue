@@ -19,7 +19,7 @@
           <label class="flex flex-col text-gray-700"> Activity </label>
           <select name="activity-choice" v-model="Activity" id="AC">
             <option
-              v-for="activity in ActivityList"
+              v-for="activity in activityList"
               :key="activity"
               :value="activity"
             >
@@ -79,7 +79,7 @@ const dialog = ref(null);
 const Activity = ref("");
 const studentName = ref("");
 const studentEmail = ref("");
-const ActivityList = [
+const activityList = [
   "FTC Robotics",
   "Town Hall Meeting",
   "Science Fair",
