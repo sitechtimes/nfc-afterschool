@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <div
-      v-if="IsEnterInfoScreenOpen"
+      v-if="isEnterInfoScreenOpen"
       class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
     ></div>
 
@@ -17,7 +17,7 @@
       >
         <p>
           <label class="flex flex-col text-gray-700"> Activity </label>
-          <select name="ActivityChoice" v-model="Activity" id="AC">
+          <select name="activity-choice" v-model="Activity" id="AC">
             <option
               v-for="activity in ActivityList"
               :key="activity"
@@ -63,7 +63,7 @@
     <p class="text-center mt-6">
       <button
         class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md"
-        @click="OpenInfoEnterPage"
+        @click="openInfoEnterPage"
       >
         Enter student information
       </button>
@@ -74,7 +74,7 @@
 <script setup lang="ts">
 const today = new Date();
 const todayFormatted = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
-const IsEnterInfoScreenOpen = ref(false);
+const isEnterInfoScreenOpen = ref(false);
 const dialog = ref(null);
 const Activity = ref("");
 const studentName = ref("");
@@ -91,9 +91,10 @@ const ActivityList = [
   "Swimming Practice",
   "Football Practice",
 ];
-function OpenInfoEnterPage() {
+
+function openInfoEnterPage() {
   dialog.value.showModal();
-  IsEnterInfoScreenOpen.value = true;
+  isEnterInfoScreenOpen.value = true;
 }
 
 function CloseWithoutData() {
@@ -101,7 +102,7 @@ function CloseWithoutData() {
   studentEmail.value = "";
   Activity.value = "";
   dialog.value.close();
-  IsEnterInfoScreenOpen.value = false;
+  isEnterInfoScreenOpen.value = false;
 }
 function NeedDataToClose() {
   studentName.value = studentName.value.trim();
@@ -115,7 +116,7 @@ function NeedDataToClose() {
   studentName.value = "";
   studentEmail.value = "";
   Activity.value = "";
-  IsEnterInfoScreenOpen.value = false;
+  isEnterInfoScreenOpen.value = false;
   dialog.value.close();
 }
 </script>

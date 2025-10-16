@@ -110,8 +110,6 @@
 </template>
 
 <script setup lang="ts">
-import EnterStudentInfo from '../components/EnterStudentInfo.vue';
-import { useUserStore } from "~/stores/userStore";
 
 const showDataModal = ref(false);
 const selectedModalSearch = ref("");
