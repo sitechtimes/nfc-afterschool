@@ -188,8 +188,6 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from "~/stores/userStore";
-
 const showDataModal = ref(false);
 const studentSearch = ref("");
 const searchError = ref("");

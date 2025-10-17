@@ -29,6 +29,7 @@
 
 <script setup lang="ts">
 import data from "../assets/fake_data.json";
+const emit = defineEmits(["close"]);
 const props = defineProps({ searchParams: { type: Object, required: true } });
 const filteredData = computed(() => {
   if (!props.searchParams) return data;
@@ -49,4 +50,13 @@ const filteredData = computed(() => {
           .includes(props.searchParams.searchString.toLowerCase()))
   );
 });
+
+function onKeydown(e: KeyboardEvent) {
+  if (e?.key === "Escape" || e?.code === "Escape") {
+    emit("close");
+  }
+}
+
+onMounted(() => window.addEventListener("keydown", onKeydown));
+onBeforeUnmount(() => window.removeEventListener("keydown", onKeydown));
 </script>
