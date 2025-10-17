@@ -22,7 +22,7 @@
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
       <div class="lg:col-span-3">
-        <div class="space-y-6 card card-md overflow-x-auto">
+        <div class="space-y-1 card card-md overflow-x-auto">
           <div class="card-body">
             <div class="flex justify-between">
               <h2 class="card-title">Avatar Attendance Records</h2>
@@ -64,8 +64,12 @@
         </div>
       </div>
       <div class="col-span-1">
+         <div class="space-y-6 card card-md p-5">
+          <h2 class="card-title mb-4">Manual Student Input</h2>
+          <EnterStudentInfo/>
+         </div>
         <div class="space-y-6 card card-md">
-          <div class="card-body">
+        <div class="card-body">
             <h2 class="card-title mb-4">
               <img
                 src="/icons/search.svg"
@@ -106,7 +110,6 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from "~/stores/userStore";
 
 const showDataModal = ref(false);
 const selectedModalSearch = ref("");
@@ -125,6 +128,8 @@ const activities = [
   "Swimming Practice",
   "Football Practice",
 ];
+
+
 const userStore = useUserStore();
 
 function handleModal(searchString: string, searchType: "activity" | "student") {
