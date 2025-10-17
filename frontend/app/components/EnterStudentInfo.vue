@@ -19,9 +19,8 @@
           <label class="flex flex-col text-gray-700"> Activity </label>
           <select name="activity-choice" v-model="Activity" id="AC">
             <option
-              v-for="activity in activityList"
-              :key="activity"
-              :value="activity"
+               v-for="activity in list.activities"
+               :key="activity"
             >
               {{ activity }}
             </option>
@@ -79,18 +78,7 @@ const dialog = ref(null);
 const Activity = ref("");
 const studentName = ref("");
 const studentEmail = ref("");
-const activityList = [
-  "FTC Robotics",
-  "Town Hall Meeting",
-  "Science Fair",
-  "Math Olympiad",
-  "Art Exhibition",
-  "Debate Club",
-  "Photography Club",
-  "Music Rehearsal",
-  "Swimming Practice",
-  "Football Practice",
-];
+const list = useActivityStore()
 
 function openInfoEnterPage() {
   dialog.value.showModal();
@@ -112,11 +100,11 @@ function NeedDataToClose() {
     activity: Activity.value,
     date: todayFormatted,
   };
-
   studentName.value = "";
   studentEmail.value = "";
   Activity.value = "";
   isEnterInfoScreenOpen.value = false;
   dialog.value.close();
+  
 }
 </script>
