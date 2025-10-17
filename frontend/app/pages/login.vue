@@ -36,8 +36,6 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from "~/stores/userStore";
-
 const userStore = useUserStore();
 const form = ref<{ username: string; password: string }>({
   username: "",
