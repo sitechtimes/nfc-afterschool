@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <div
-      v-if="isEnterInfoScreenOpen"
+      v-if="studentInfoScreen"
       class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
     ></div>
 
@@ -12,14 +12,14 @@
     >
       <form
         method="dialog"
-        @submit.prevent="NeedDataToClose"
+        @submit.prevent="submitStudentData"
         class="flex flex-col gap-4"
       >
         <p>
           <label class="flex flex-col text-gray-700"> Activity </label>
-          <select name="activity-choice" v-model="Activity" id="AC">
+          <select name="activity-choice" v-model="studentEvent" id="AC">
             <option
-               v-for="activity in list.activities"
+               v-for="activity in listOfActivities.activities"
                :key="activity"
             >
               {{ activity }}
@@ -53,7 +53,7 @@
           <input
             type="button"
             class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md cursor-pointer"
-            @click="CloseWithoutData"
+            @click="closeWithoutData"
             value="Close"
           />
         </div>
@@ -73,37 +73,37 @@
 <script setup lang="ts">
 const today = new Date();
 const todayFormatted = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
-const isEnterInfoScreenOpen = ref(false);
-const dialog = ref(null);
-const Activity = ref("");
+const studentInfoScreen = ref(false);
+const dialog = ref();
+const studentEvent = ref("");
 const studentName = ref("");
 const studentEmail = ref("");
-const list = useActivityStore()
+const listOfActivities = useActivityStore()
 
 function openInfoEnterPage() {
   dialog.value.showModal();
-  isEnterInfoScreenOpen.value = true;
+  studentInfoScreen.value = true;
 }
 
-function CloseWithoutData() {
+function closeWithoutData() {
   studentName.value = "";
   studentEmail.value = "";
-  Activity.value = "";
+  studentEvent.value = "";
   dialog.value.close();
-  isEnterInfoScreenOpen.value = false;
+  studentInfoScreen.value = false;
 }
-function NeedDataToClose() {
+function submitStudentData() {
   studentName.value = studentName.value.trim();
   const studentData = {
     name: studentName.value,
     email: studentEmail.value,
-    activity: Activity.value,
+    activity: studentEvent.value,
     date: todayFormatted,
   };
   studentName.value = "";
   studentEmail.value = "";
-  Activity.value = "";
-  isEnterInfoScreenOpen.value = false;
+  studentEvent.value = "";
+  studentInfoScreen.value = false;
   dialog.value.close();
   
 }
