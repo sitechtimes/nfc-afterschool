@@ -19,8 +19,8 @@
           <label class="flex flex-col text-gray-700"> Activity </label>
           <select name="activity-choice" v-model="studentEvent" id="AC">
             <option
-               v-for="activity in listOfActivities.activities"
-               :key="activity"
+              v-for="activity in listOfActivities.activities"
+              :key="activity"
             >
               {{ activity }}
             </option>
@@ -78,7 +78,7 @@ const dialog = ref();
 const studentEvent = ref("");
 const studentName = ref("");
 const studentEmail = ref("");
-const listOfActivities = useActivityStore()
+const listOfActivities = useActivityStore();
 
 function openInfoEnterPage() {
   dialog.value.showModal();
@@ -105,6 +105,5 @@ function submitStudentData() {
   studentEvent.value = "";
   studentInfoScreen.value = false;
   dialog.value.close();
-  
 }
 </script>

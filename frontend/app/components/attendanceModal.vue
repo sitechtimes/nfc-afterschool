@@ -38,7 +38,7 @@ const filteredData = computed(() => {
         ?.toString()
         .toLowerCase()
         .includes(props.search.toLowerCase()) ||
-      item.activity?.toLowerCase().includes(props.search.toLowerCase())
+      item.activity?.toLowerCase().includes(props.search.toLowerCase()),
   );
 });
 </script>
