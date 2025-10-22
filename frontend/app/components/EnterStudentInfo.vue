@@ -17,7 +17,7 @@
       >
         <p>
           <label class="flex flex-col text-gray-700"> Activity </label>
-          <select name="activity-choice" v-model="studentEvent" id="AC">
+          <select name="activity-choice" v-model="studentActivity" id="AC">
             <option
               v-for="activity in listOfActivities.activities"
               :key="activity"
@@ -75,7 +75,7 @@ const today = new Date();
 const todayFormatted = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
 const studentInfoScreen = ref(false);
 const dialog = ref();
-const studentEvent = ref("");
+const studentActivity = ref("");
 const studentName = ref("");
 const studentEmail = ref("");
 const listOfActivities = useActivityStore();
@@ -88,7 +88,7 @@ function openInfoEnterPage() {
 function closeWithoutData() {
   studentName.value = "";
   studentEmail.value = "";
-  studentEvent.value = "";
+  studentActivity.value = "";
   dialog.value.close();
   studentInfoScreen.value = false;
 }
@@ -97,12 +97,12 @@ function submitStudentData() {
   const studentData = {
     name: studentName.value,
     email: studentEmail.value,
-    activity: studentEvent.value,
+    activity: studentActivity.value,
     date: todayFormatted,
   };
   studentName.value = "";
   studentEmail.value = "";
-  studentEvent.value = "";
+  studentActivity.value = "";
   studentInfoScreen.value = false;
   dialog.value.close();
 }
