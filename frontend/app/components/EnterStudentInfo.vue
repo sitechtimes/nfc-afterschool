@@ -15,7 +15,7 @@
         @submit.prevent="submitStudentData"
         class="flex flex-col gap-4"
       >
-        <p>
+      <div>
           <label class="flex flex-col text-gray-700"> Activity </label>
           <select name="activity-choice" v-model="studentActivity" id="AC">
             <option
@@ -43,7 +43,6 @@
               class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </label>
-        </p>
         <div class="flex justify-end gap-2">
           <input
             type="submit"
@@ -55,7 +54,7 @@
             class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md cursor-pointer"
             @click="closeWithoutData"
             value="Close"
-          />
+            </div>
         </div>
       </form>
     </dialog>
