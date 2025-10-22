@@ -4,7 +4,6 @@
       v-if="studentInfoScreen"
       class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
     ></div>
-
     <dialog
       ref="dialog"
       id="dialog"
@@ -15,46 +14,42 @@
         @submit.prevent="submitStudentData"
         class="flex flex-col gap-4"
       >
-      <div>
-          <label class="flex flex-col text-gray-700"> Activity </label>
-          <select name="activity-choice" v-model="studentActivity" id="AC">
-            <option
-              v-for="activity in listOfActivities.activities"
-              :key="activity"
-            >
-              {{ activity }}
-            </option>
-          </select>
-          <label class="flex flex-col text-gray-700">
-            Name:
-            <input
-              v-model="studentName"
-              type="text"
-              required
-              class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </label>
-          <label class="flex flex-col text-gray-700">
-            Student Email:
-            <input
-              type="email"
-              v-model="studentEmail"
-              required
-              class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </label>
+        <label class="flex flex-col text-gray-700"> Activity </label>
+        <select name="activity-choice" v-model="studentActivity" id="AC">
+          <option
+            v-for="activity in listOfActivities.activities"
+            :key="activity"
+          >
+            {{ activity }}
+          </option>
+        </select>
+        <label class="flex flex-col text-gray-700">
+          Name:
+          <input
+            v-model="studentName"
+            type="text"
+            required
+            class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </label>
+        <label class="flex flex-col text-gray-700">
+          Student Email:
+          <input
+            type="email"
+            v-model="studentEmail"
+            required
+            class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </label>
         <div class="flex justify-end gap-2">
           <input
             type="submit"
             class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-4 py-2 rounded-md cursor-pointer"
             value="Submit"
           />
-          <input
-            type="button"
-            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md cursor-pointer"
-            @click="closeWithoutData"
-            value="Close"
-            </div>
+          <input type="button" class="bg-blue-500 hover:bg-blue-600 text-white
+          px-4 py-2 rounded-md cursor-pointer" @click="closeWithoutData"
+          value="Close"
         </div>
       </form>
     </dialog>
@@ -71,7 +66,9 @@
 
 <script setup lang="ts">
 const today = new Date();
-const todayFormatted = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
+const todayFormatted = `${
+  today.getMonth() + 1
+}/${today.getDate()}/${today.getFullYear()}`;
 const studentInfoScreen = ref(false);
 const dialog = ref();
 const studentActivity = ref("");
@@ -83,7 +80,6 @@ function openInfoEnterPage() {
   dialog.value.showModal();
   studentInfoScreen.value = true;
 }
-
 function closeWithoutData() {
   studentName.value = "";
   studentEmail.value = "";

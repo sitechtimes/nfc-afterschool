@@ -64,16 +64,16 @@
         </div>
       </div>
       <div class="col-span-1">
-         <div class="card card-md p-2 ">
-          <header>
+        <div class="card card-md p-2">
+          <div class="card-body justify-center items-center">
             <h2 class="card-title">Manual Student Input</h2>
-          </header>
-          <section>
+          </div>
+          <div class="card-actions justify-center items-center">
             <EnterStudentInfo />
-          </section>
+          </div>
         </div>
         <div class="space-y-6 card card-md">
-        <div class="card-body">
+          <div class="card-body">
             <h2 class="card-title mb-4">
               <img
                 src="/icons/search.svg"
@@ -114,7 +114,6 @@
 </template>
 
 <script setup lang="ts">
-
 const showDataModal = ref(false);
 const selectedModalSearch = ref("");
 const studentSearch = ref("");
@@ -132,7 +131,6 @@ const activities = [
   "Swimming Practice",
   "Football Practice",
 ];
-
 
 const userStore = useUserStore();
 
