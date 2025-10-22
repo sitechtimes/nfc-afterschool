@@ -2,7 +2,7 @@
   <div class="relative">
     <div
       v-if="studentInfoScreen"
-      class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
+      class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 ju"
     ></div>
     <dialog
       ref="dialog"
@@ -53,14 +53,12 @@
         </div>
       </form>
     </dialog>
-    <p class="text-center mt-6">
-      <button
-        class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md"
-        @click="openInfoEnterPage"
-      >
-        Enter student information
-      </button>
-    </p>
+    <button
+      class="bg-blue-500 text-white px-10 py-3 rounded-lg shadow-md"
+      @click="openInfoEnterPage"
+    >
+      Enter student information
+    </button>
   </div>
 </template>
 
