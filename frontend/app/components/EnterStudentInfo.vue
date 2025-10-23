@@ -2,12 +2,12 @@
   <div class="relative">
     <div
       v-if="studentInfoScreen"
-      class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 ju"
+      class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
     ></div>
     <dialog
       ref="dialog"
       id="dialog"
-      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-white rounded-lg p-6 shadow-xl w-[90%] max-w-md"
+      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-white rounded-lg p-6 shadow-xl w-4/5 max-w-md"
     >
       <form
         method="dialog"
@@ -42,21 +42,12 @@
           />
         </label>
         <div class="flex justify-end gap-2">
-          <input
-            type="submit"
-            class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-4 py-2 rounded-md cursor-pointer"
-            value="Submit"
-          />
-          <input type="button" class="bg-blue-500 hover:bg-blue-600 text-white
-          px-4 py-2 rounded-md cursor-pointer" @click="closeWithoutData"
-          value="Close"
+          <button class="btn btn-md">Submit</button>
+          <button class="btn btn-md" @click="closeWithoutData">Close</button>
         </div>
       </form>
     </dialog>
-    <button
-      class="bg-blue-500 text-white px-10 py-3 rounded-lg shadow-md"
-      @click="openInfoEnterPage"
-    >
+    <button class="btn btn-md" @click="openInfoEnterPage">
       Enter student information
     </button>
   </div>
