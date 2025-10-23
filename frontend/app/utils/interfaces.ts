@@ -6,6 +6,11 @@ export interface ScanInstance {
   student_cassid: Int16Array;
 }
 
+export interface SearchParams {
+  searchString: string;
+  searchType: string;
+  searchDate: string;
+}
 export interface User {
   username: string;
   role: string;

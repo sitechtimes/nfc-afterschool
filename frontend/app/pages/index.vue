@@ -1,7 +1,7 @@
 <template>
   <attendanceModal
     v-if="showDataModal"
-    :search="selectedModalSearch"
+    :searchParams="searchParams"
     @close="showDataModal = false"
   />
 
@@ -43,7 +43,13 @@
                   <th>{{ activity }}</th>
                   <td>
                     <button
-                      @click="handleModal(activity, 'activity')"
+                      @click="
+                        handleModal({
+                          searchString: activity,
+                          searchType: 'activity',
+                          searchDate: selectedDate,
+                        })
+                      "
                       class="btn btn-sm btn-outline btn-wide"
                     >
                       Click to view
@@ -51,7 +57,13 @@
                   </td>
                   <td>
                     <button
-                      @click="handleModal(activity, 'activity')"
+                      @click="
+                        handleModal({
+                          searchString: activity,
+                          searchType: 'activity',
+                          searchDate: 'today',
+                        })
+                      "
                       class="btn btn-sm btn-outline btn-wide"
                     >
                       Click to view
@@ -63,8 +75,8 @@
           </div>
         </div>
       </div>
-      <div class="col-span-1">
-        <div class="space-y-6 card card-md">
+      <div class="col-span-1 flex flex-col gap-6">
+        <div class="space-y-6 card card-md mb-1">
           <div class="card-body">
             <h2 class="card-title mb-4">
               <img
@@ -75,19 +87,36 @@
             </h2>
             <div class="card-actions">
               <form
-                class="w-full"
-                @submit.prevent="handleModal(studentSearch, 'student')"
+                class="w-full flex flex-col gap-2"
+                @submit.prevent="
+                  handleModal({
+                    searchString: studentSearch,
+                    searchType: 'student',
+                    searchDate: selectedDate,
+                  });
+                  studentSearchInputRef.blur();
+                "
               >
+                <label class="sr-only" for="studentSearchInputRef"
+                  >Search by student name or email</label
+                >
                 <input
                   v-model="studentSearch"
                   type="search"
+                  id="studentSearchInputRef"
                   ref="studentSearchInputRef"
                   class="input w-full bg-base-200"
-                  placeholder="Search student name/email/cassid"
+                  placeholder="Search student name/email"
                 />
               </form>
               <button
-                @click="handleModal(studentSearch, 'student')"
+                @click="
+                  handleModal({
+                    searchString: studentSearch,
+                    searchType: 'student',
+                    searchDate: selectedDate,
+                  })
+                "
                 class="btn btn-outline btn-block"
               >
                 <img
@@ -100,19 +129,77 @@
             </div>
           </div>
         </div>
+        <div class="card card-md space-y-6">
+          <div class="card-body">
+            <h2 class="card-title">Select Date</h2>
+            <div class="card-actions">
+              <form
+                @submit.prevent
+                class="flex w-full justify-center items-center gap-2 relative border rounded-xl overflow-hidden"
+              >
+                <div
+                  class="absolute inset-y-0 left-0 bg-primary/70 transition-transform duration-300 ease-in-out w-1/2 rounded-xl shadow-md"
+                  :class="isDateSelected ? 'translate-x-full' : 'translate-x-0'"
+                ></div>
+
+                <div class="flex py-1 justify-around w-full relative z-10">
+                  <button
+                    type="button"
+                    class="flex-1 text-xl font-bold cursor-pointer text-center"
+                    @click="isDateSelected = false"
+                    :class="!isDateSelected ? 'text-base-200' : ''"
+                  >
+                    None
+                  </button>
+                  <button
+                    type="button"
+                    class="flex-1 text-xl font-bold cursor-pointer text-center"
+                    @click="isDateSelected = true"
+                    :class="isDateSelected ? 'text-base-200' : ''"
+                  >
+                    Select
+                  </button>
+                </div>
+              </form>
+              <div v-if="isDateSelected" class="card w-full p-6 space-y-4">
+                <label class="text-sm font-semibold text-base-content/70">
+                  Filter by date
+                </label>
+                <div class="w-full flex gap-2">
+                  <input
+                    v-model="selectedDate"
+                    type="date"
+                    class="input input-bordered"
+                  />
+                </div>
+              </div>
+              <p
+                v-if="!isDateSelected"
+                class="text-sm text-center text-base-content/70"
+              >
+                Showing attendance for every date.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from "~/stores/userStore";
-
 const showDataModal = ref(false);
-const selectedModalSearch = ref("");
 const studentSearch = ref("");
 const searchError = ref("");
 const studentSearchInputRef = ref();
+const searchParams = ref({
+  searchString: "",
+  searchType: "",
+  searchDate: "",
+});
+const isDateSelected = ref(false);
+const selectedDate = ref("");
+
 const activities = [
   "FTC Robotics",
   "Town Hall Meeting",
@@ -127,16 +214,28 @@ const activities = [
 ];
 const userStore = useUserStore();
 
-function handleModal(searchString: string, searchType: "activity" | "student") {
-  studentSearchInputRef.value.blur();
-  //console.log(searchString, searchType);
-  if (searchType === "student" && searchString === "") {
-    searchError.value = "Please enter name/email/cassid of student";
+function handleModal(params: SearchParams) {
+  if (params.searchType === "student" && params.searchString === "") {
+    searchError.value = "Please enter name/email of student";
     return;
   }
   searchError.value = "";
-  //ONCE TYPESCRIPT WORKS ADD SOMETHING TO MAKE SURE U CAN SEARCH FOR SPECIFICALLY TODAY
-  selectedModalSearch.value = searchString;
+  if (!isDateSelected.value && params.searchDate !== "today") {
+    params.searchDate = "";
+  } else if (params.searchDate === "today") {
+    params.searchDate = new Date().toLocaleDateString("en-US");
+  } else {
+    const [year, month, day] = params.searchDate.split("-");
+    if (year && month && day) {
+      params.searchDate = new Date(
+        parseInt(year),
+        parseInt(month) - 1,
+        parseInt(day)
+      ).toLocaleDateString("en-US");
+    }
+  }
+  searchParams.value = params;
+
   showDataModal.value = true;
 }
 </script>
