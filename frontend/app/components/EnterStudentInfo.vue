@@ -7,7 +7,7 @@
     <dialog
       ref="dialog"
       id="dialog"
-      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-white rounded-lg p-6 shadow-xl w-4/5 max-w-md"
+      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 fieldset rounded-box border p-4 border-primary w-xs"
     >
       <form
         method="dialog"
@@ -15,7 +15,12 @@
         class="flex flex-col gap-4"
       >
         <label class="flex flex-col text-gray-700"> Activity </label>
-        <select name="activity-choice" v-model="studentActivity" id="AC">
+        <select
+          name="activity-choice"
+          v-model="studentActivity"
+          id="AC"
+          class="select"
+        >
           <option
             v-for="activity in listOfActivities.activities"
             :key="activity"
@@ -25,21 +30,11 @@
         </select>
         <label class="flex flex-col text-gray-700">
           Name:
-          <input
-            v-model="studentName"
-            type="text"
-            required
-            class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
+          <input v-model="studentName" type="text" required class="input" />
         </label>
         <label class="flex flex-col text-gray-700">
           Student Email:
-          <input
-            type="email"
-            v-model="studentEmail"
-            required
-            class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
+          <input type="email" v-model="studentEmail" required class="input" />
         </label>
         <div class="flex justify-end gap-2">
           <button class="btn btn-md">Submit</button>
