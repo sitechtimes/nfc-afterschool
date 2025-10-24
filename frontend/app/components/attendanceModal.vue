@@ -1,6 +1,8 @@
 <template>
   <dialog class="modal modal-open cursor-pointer" @click.self="$emit('close')">
-    <div class="modal-box cursor-default max-w-3/4">
+    <div
+      class="modal-box cursor-default max-w-5xl w-11/12 max-h-screen overflow-auto"
+    >
       <table class="table">
         <thead>
           <tr>
@@ -27,18 +29,34 @@
 
 <script setup lang="ts">
 import data from "../assets/fake_data.json";
-const props = defineProps({ search: { type: String, required: true } });
+const emit = defineEmits(["close"]);
+const props = defineProps({ searchParams: { type: Object, required: true } });
 const filteredData = computed(() => {
-  if (!props.search) return data;
+  if (!props.searchParams) return data;
   return data.filter(
     (item) =>
-      item.student_name?.toLowerCase().includes(props.search.toLowerCase()) ||
-      item.student_email?.toLowerCase().includes(props.search.toLowerCase()) ||
-      item.student_cassid
-        ?.toString()
-        .toLowerCase()
-        .includes(props.search.toLowerCase()) ||
-      item.activity?.toLowerCase().includes(props.search.toLowerCase()),
+      (props.searchParams.searchDate === "" ||
+        item.date === props.searchParams.searchDate) &&
+      (props.searchParams.searchType !== "student" ||
+        item.student_name
+          ?.toLowerCase()
+          .includes(props.searchParams.searchString.toLowerCase()) ||
+        item.student_email
+          ?.toLowerCase()
+          .includes(props.searchParams.searchString.toLowerCase())) &&
+      (props.searchParams.searchType !== "activity" ||
+        item.activity
+          ?.toLowerCase()
+          .includes(props.searchParams.searchString.toLowerCase()))
   );
 });
+
+function onKeydown(e: KeyboardEvent) {
+  if (e?.key === "Escape" || e?.code === "Escape") {
+    emit("close");
+  }
+}
+
+onMounted(() => window.addEventListener("keydown", onKeydown));
+onBeforeUnmount(() => window.removeEventListener("keydown", onKeydown));
 </script>
