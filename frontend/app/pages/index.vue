@@ -182,6 +182,85 @@
             </div>
           </div>
         </div>
+        <div class="w-[65%] border-r-2 border-gray-400 p-8 flex flex-col gap-8">
+          <div class="text-center">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">
+              Student Programming
+            </h1>
+            <p class="text-gray-600">
+              Search for a student and program their NFC card
+            </p>
+          </div>
+
+          <div
+            class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200"
+          >
+            <h2
+              class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2"
+            >
+              Find Student
+            </h2>
+
+            <div class="relative">
+              <input
+                type="text"
+                v-model="studentSearch"
+                placeholder="Type student name or email to search..."
+                class="w-full p-4 pr-12 text-lg border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none transition-colors bg-gray-50 focus:bg-white"
+              />
+
+              <div
+                v-if="filteredStudents.length > 0 && studentSearch"
+                class="absolute top-full left-0 right-0 bg-white border-2 border-gray-200 rounded-xl mt-2 max-h-64 overflow-y-auto z-20 shadow-xl"
+              >
+                <div
+                  v-for="student in filteredStudents.slice(0, 8)"
+                  :key="student.email"
+                  @click=""
+                  class="p-4 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors"
+                >
+                  <div class="font-semibold text-gray-800">
+                    {{ student.name }}
+                  </div>
+                  <div class="text-sm text-gray-500">{{ student.email }}</div>
+                </div>
+                <div
+                  v-if="filteredStudents.length > 8"
+                  class="p-3 text-center text-sm text-gray-500 bg-gray-50"
+                >
+                  {{ filteredStudents.length - 8 }} more results... Continue
+                  typing to narrow down.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            v-if="selectedStudent"
+            class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200"
+          >
+            <h2
+              class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2"
+            >
+              Selected Student
+            </h2>
+
+            <div
+              class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 mb-6 border border-blue-200"
+            >
+              <div class="flex items-center gap-3">
+                <div>
+                  <div class="font-semibold text-gray-800">
+                    {{ selectedStudent.name }}
+                  </div>
+                  <div class="text-sm text-gray-600">
+                    {{ selectedStudent.email }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -199,6 +278,12 @@ const searchParams = ref({
 });
 const isDateSelected = ref(false);
 const selectedDate = ref("");
+const students = ref<StudentLookup[]>([]);
+const selectedStudent = ref<{
+  name: string;
+  email: string;
+  display: string;
+} | null>(null);
 
 const activities = [
   "FTC Robotics",
@@ -213,6 +298,18 @@ const activities = [
   "Football Practice",
 ];
 const userStore = useUserStore();
+
+const filteredStudents = computed(() => {
+  if (!Array.isArray(students.value) || studentSearch.value == "") return [];
+  const unfilteredStudents = students.value.map((student) => ({
+    name: student.Name,
+    email: student.Email,
+    display: `${student.Name} | ${student.Email}`,
+  }));
+  return unfilteredStudents.filter((student) =>
+    student.display.includes(studentSearch.value)
+  );
+});
 
 function handleModal(params: SearchParams) {
   if (params.searchType === "student" && params.searchString === "") {
@@ -237,5 +334,35 @@ function handleModal(params: SearchParams) {
   searchParams.value = params;
 
   showDataModal.value = true;
+}
+
+const fetchLookup = async () => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/students/lookup/`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    students.value = data.students_data;
+  } catch (error) {
+    console.error("Error fetching students:", error);
+  }
+};
+
+onMounted(() => {
+  calls();
+  setInterval(calls, 5);
+});
+
+function calls() {
+  fetchLookup();
 }
 </script>

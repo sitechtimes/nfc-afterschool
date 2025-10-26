@@ -15,3 +15,12 @@ export interface User {
   username: string;
   role: string;
 }
+
+export interface StudentLookup {
+  Name: string;
+  Homeroom: string;
+  gradYear: number;
+  Email: string;
+  caassID: string;
+  OSIS: string;
+}
