@@ -43,7 +43,7 @@
         </div>
       </form>
     </dialog>
-    <button class="btn btn-md" @click="openInfoEnterPage">
+    <button class="btn btn-md btn-outline" @click="openInfoEnterPage">
       Enter student information
     </button>
   </div>
