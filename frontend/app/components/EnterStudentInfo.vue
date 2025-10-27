@@ -1,10 +1,11 @@
 <template>
   <div class="relative">
     <div
-      v-if="studentInfoScreen"
+      v-if="studentInfoScreenOpen"
       class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
     ></div>
     <dialog
+      v-if="studentInfoScreenOpen"
       ref="dialog"
       id="dialog"
       class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 fieldset rounded-box border p-4 border-primary w-xs"
@@ -14,7 +15,7 @@
         @submit.prevent="submitStudentData"
         class="flex flex-col gap-4"
       >
-        <label class="flex flex-col text-gray-700"> Activity </label>
+        <label class="flex flex-col text-primary-content"> Activity </label>
         <select
           name="activity-choice"
           v-model="studentActivity"
@@ -53,7 +54,7 @@ const today = new Date();
 const todayFormatted = `${
   today.getMonth() + 1
 }/${today.getDate()}/${today.getFullYear()}`;
-const studentInfoScreen = ref(false);
+const studentInfoScreenOpen = ref(false);
 const dialog = ref();
 const studentActivity = ref("");
 const studentName = ref("");
@@ -61,15 +62,14 @@ const studentEmail = ref("");
 const listOfActivities = useActivityStore();
 
 function openInfoEnterPage() {
-  dialog.value.showModal();
-  studentInfoScreen.value = true;
+  studentInfoScreenOpen.value = true;
 }
 function closeWithoutData() {
   studentName.value = "";
   studentEmail.value = "";
   studentActivity.value = "";
   dialog.value.close();
-  studentInfoScreen.value = false;
+  studentInfoScreenOpen.value = false;
 }
 function submitStudentData() {
   studentName.value = studentName.value.trim();
@@ -82,7 +82,7 @@ function submitStudentData() {
   studentName.value = "";
   studentEmail.value = "";
   studentActivity.value = "";
-  studentInfoScreen.value = false;
+  studentInfoScreenOpen.value = false;
   dialog.value.close();
 }
 </script>
