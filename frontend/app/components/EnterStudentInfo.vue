@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="relative w-full px-6">
     <div
       v-if="studentInfoScreenOpen"
       class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
@@ -43,7 +43,7 @@
         </div>
       </form>
     </dialog>
-    <button class="btn btn-md btn-outline" @click="openInfoEnterPage">
+    <button class="btn btn-outline btn-block" @click="openInfoEnterPage">
       Enter student information
     </button>
   </div>

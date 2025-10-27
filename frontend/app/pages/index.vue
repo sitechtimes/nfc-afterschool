@@ -78,10 +78,10 @@
 
       <div class="col-span-1 flex flex-col gap-6">
         <div class="card card-md mb-1">
-          <div class="card-body items-center">
+          <div class="card-body">
             <h2 class="card-title">Manual Student Input</h2>
           </div>
-          <div class="card-actions justify-center items-center pb-5">
+          <div class="card-actions justify-center pb-5">
             <EnterStudentInfo />
           </div>
         </div>
