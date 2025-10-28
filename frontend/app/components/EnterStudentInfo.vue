@@ -15,20 +15,18 @@
         @submit.prevent="submitStudentData"
         class="flex flex-col gap-4"
       >
-        <label class="flex flex-col text-primary-content"> Activity </label>
+        <label class="flex flex-col text-secondary-content"> Activity </label>
         <select
           name="activity-choice"
           v-model="studentActivity"
           id="AC"
           class="select"
         >
-          <option
-            v-for="activity in listOfActivities.activities"
-            :key="activity"
-          >
+          <option v-for="activity in limitedViewDropdown" :key="activity">
             {{ activity }}
           </option>
         </select>
+
         <label class="flex flex-col text-gray-700">
           Name:
           <input v-model="studentName" type="text" required class="input" />
@@ -60,6 +58,7 @@ const studentActivity = ref("");
 const studentName = ref("");
 const studentEmail = ref("");
 const listOfActivities = useActivityStore();
+const limitedViewDropdown = listOfActivities.activities.slice(0, 15);
 
 function openInfoEnterPage() {
   studentInfoScreenOpen.value = true;
