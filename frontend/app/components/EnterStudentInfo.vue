@@ -26,6 +26,7 @@
             {{ activity }}
           </option>
         </select>
+        <!-- Tailwin dropdown menu \ Rewrite this all  -->
 
         <label class="flex flex-col text-gray-700">
           Name:
