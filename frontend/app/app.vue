@@ -11,7 +11,7 @@ function calls() {
   //   userStore.getUser();
 }
 onMounted(() => {
-  userStore.getUser();
+  //userStore.getUser();
   setInterval(() => {
     calls();
   }, 3000);
