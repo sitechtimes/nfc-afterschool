@@ -85,12 +85,35 @@
                 alt="Search icon"
               />Search Student
             </h2>
+            <div v-if="selectedStudent">
+              <div
+                class="flex items-center gap-3 justify-between bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200"
+              >
+                <div>
+                  <div class="font-semibold text-gray-800">
+                    {{ selectedStudent.name }}
+                  </div>
+                  <div class="text-sm text-gray-600">
+                    {{ selectedStudent.email }}
+                  </div>
+                </div>
+                <button
+                  @click="selectedStudent = null"
+                  class="w-8 h-8 rounded-full hover:bg-red-100 hover:cursor-pointer flex items-center justify-center transition-colors"
+                  title="Remove student"
+                >
+                  <img src="/icons/trash.svg" class="w-5 h-5" />
+                </button>
+              </div>
+            </div>
             <div class="card-actions">
               <form
                 class="w-full flex flex-col gap-2"
                 @submit.prevent="
                   handleModal({
-                    searchString: studentSearch,
+                    searchString: selectedStudent
+                      ? selectedStudent.name
+                      : studentSearch,
                     searchType: 'student',
                     searchDate: selectedDate,
                   });
@@ -102,6 +125,7 @@
                 >
                 <input
                   v-model="studentSearch"
+                  v-show="!selectedStudent"
                   type="search"
                   id="studentSearchInputRef"
                   ref="studentSearchInputRef"
@@ -112,7 +136,9 @@
               <button
                 @click="
                   handleModal({
-                    searchString: studentSearch,
+                    searchString: selectedStudent
+                      ? selectedStudent.name
+                      : studentSearch,
                     searchType: 'student',
                     searchDate: selectedDate,
                   })
@@ -121,14 +147,34 @@
               >
                 <img
                   src="/icons/search.svg"
-                  class="h-[1em] opacity-50"
+                  class="h-[1rem] opacity-50"
                   alt="Search icon"
                 />Search Records
               </button>
-              <p class="text-error">{{ searchError }}</p>
+              <div
+                v-if="filteredStudents.length > 0 && studentSearch"
+                class="absolute top-full left-0 right-0 bg-white border-2 border-gray-200 rounded-xl mt-2 max-h-64 overflow-y-auto z-20 shadow-xl"
+              >
+                <div
+                  v-for="student in filteredStudents"
+                  :key="student.email"
+                  @click="
+                    selectedStudent = student;
+                    studentSearch = '';
+                  "
+                  class="p-4 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors"
+                >
+                  <div class="font-semibold text-gray-800">
+                    {{ student.name }}
+                  </div>
+                  <div class="text-sm text-gray-500">{{ student.email }}</div>
+                </div>
+              </div>
             </div>
+            <p class="text-error">{{ searchError }}</p>
           </div>
         </div>
+
         <div class="card card-md space-y-6">
           <div class="card-body">
             <h2 class="card-title">Select Date</h2>
@@ -182,91 +228,13 @@
             </div>
           </div>
         </div>
-        <div class="w-[65%] border-r-2 border-gray-400 p-8 flex flex-col gap-8">
-          <div class="text-center">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">
-              Student Programming
-            </h1>
-            <p class="text-gray-600">
-              Search for a student and program their NFC card
-            </p>
-          </div>
-
-          <div
-            class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200"
-          >
-            <h2
-              class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2"
-            >
-              Find Student
-            </h2>
-
-            <div class="relative">
-              <input
-                type="text"
-                v-model="studentSearch"
-                placeholder="Type student name or email to search..."
-                class="w-full p-4 pr-12 text-lg border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none transition-colors bg-gray-50 focus:bg-white"
-              />
-
-              <div
-                v-if="filteredStudents.length > 0 && studentSearch"
-                class="absolute top-full left-0 right-0 bg-white border-2 border-gray-200 rounded-xl mt-2 max-h-64 overflow-y-auto z-20 shadow-xl"
-              >
-                <div
-                  v-for="student in filteredStudents.slice(0, 8)"
-                  :key="student.email"
-                  @click=""
-                  class="p-4 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors"
-                >
-                  <div class="font-semibold text-gray-800">
-                    {{ student.name }}
-                  </div>
-                  <div class="text-sm text-gray-500">{{ student.email }}</div>
-                </div>
-                <div
-                  v-if="filteredStudents.length > 8"
-                  class="p-3 text-center text-sm text-gray-500 bg-gray-50"
-                >
-                  {{ filteredStudents.length - 8 }} more results... Continue
-                  typing to narrow down.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            v-if="selectedStudent"
-            class="bg-white rounded-2xl shadow-lg p-6 border border-gray-200"
-          >
-            <h2
-              class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2"
-            >
-              Selected Student
-            </h2>
-
-            <div
-              class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 mb-6 border border-blue-200"
-            >
-              <div class="flex items-center gap-3">
-                <div>
-                  <div class="font-semibold text-gray-800">
-                    {{ selectedStudent.name }}
-                  </div>
-                  <div class="text-sm text-gray-600">
-                    {{ selectedStudent.email }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import fake_data from "../../public/fake_data.json";
 const showDataModal = ref(false);
 const studentSearch = ref("");
 const searchError = ref("");
@@ -357,9 +325,17 @@ const fetchLookup = async () => {
   }
 };
 
+/*
+TEMPORARY DATA
+ */
+students.value = fake_data.map((student) => ({
+  ...student,
+  caassID: String(student.caassID),
+})) as StudentLookup[];
+
 onMounted(() => {
-  calls();
-  setInterval(calls, 5);
+  //calls();
+  //setInterval(calls, 5);
 });
 
 function calls() {
