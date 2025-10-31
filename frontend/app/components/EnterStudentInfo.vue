@@ -16,6 +16,23 @@
         class="flex flex-col gap-4"
       >
         <label class="flex flex-col text-secondary-content"> Activity </label>
+
+        <div class="dropdown dropdown-bottom dropdown-center">
+          <div tabindex="0" role="button" class="btn m-1">Click ⬇️</div>
+          <ul
+            tabindex="-1"
+            class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+          >
+            <li
+              v-for="activity in limitedViewDropdown"
+              :key="activity"
+              @click="test"
+            >
+              <a>{{ activity }}</a>
+            </li>
+          </ul>
+        </div>
+
         <select
           name="activity-choice"
           v-model="studentActivity"
@@ -60,6 +77,10 @@ const studentName = ref("");
 const studentEmail = ref("");
 const listOfActivities = useActivityStore();
 const limitedViewDropdown = listOfActivities.activities.slice(0, 15);
+
+function test() {
+  console.log("test");
+}
 
 function openInfoEnterPage() {
   studentInfoScreenOpen.value = true;
