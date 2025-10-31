@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col h-screen p-4 items-center justify-center gap-10 bg-gradient-to-br from-base-100 via-secondary to-base-300"
+    class="flex flex-col h-screen items-center justify-center gap-10 bg-gradient-to-br from-base-100 via-secondary to-base-300"
   >
     <h1 class="text-3xl font-bold">After School Attendance</h1>
     <div
