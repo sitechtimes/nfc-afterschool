@@ -81,7 +81,7 @@
             <h2 class="card-title mb-4">
               <img
                 src="/icons/search.svg"
-                class="h-[1em] opacity-50"
+                class="h-4 opacity-50"
                 alt="Search icon"
               />Search Student
             </h2>
@@ -252,6 +252,7 @@ const selectedStudent = ref<{
   email: string;
   display: string;
 } | null>(null);
+const config = useRuntimeConfig();
 
 const activities = [
   "FTC Robotics",
@@ -270,9 +271,9 @@ const userStore = useUserStore();
 const filteredStudents = computed(() => {
   if (!Array.isArray(students.value) || studentSearch.value == "") return [];
   const unfilteredStudents = students.value.map((student) => ({
-    name: student.Name,
-    email: student.Email,
-    display: `${student.Name} | ${student.Email}`,
+    name: student.name,
+    email: student.email,
+    display: `${student.name} | ${student.email}`,
   }));
   return unfilteredStudents.filter((student) =>
     student.display.includes(studentSearch.value)
@@ -307,7 +308,7 @@ function handleModal(params: SearchParams) {
 const fetchLookup = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/students/lookup/`,
+      `${config.public.backendUrl}/students/lookup/`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -329,8 +330,12 @@ const fetchLookup = async () => {
 TEMPORARY DATA
  */
 students.value = fake_data.map((student) => ({
-  ...student,
-  caassID: String(student.caassID),
+  name: student.name,
+  homeroom: student.homeroom,
+  grad_year: student.grad_year,
+  email: student.email,
+  caass_id: String(student.caass_id),
+  osis: student.osis,
 })) as StudentLookup[];
 
 onMounted(() => {

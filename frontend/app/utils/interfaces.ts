@@ -17,10 +17,10 @@ export interface User {
 }
 
 export interface StudentLookup {
-  Name: string;
-  Homeroom: string;
-  gradYear: number;
-  Email: string;
-  caassID: string;
-  OSIS: string;
+  name: string;
+  homeroom: string;
+  grad_year: number;
+  email: string;
+  caass_id: string;
+  osis: string;
 }
