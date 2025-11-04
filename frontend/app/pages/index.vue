@@ -81,16 +81,39 @@
             <h2 class="card-title mb-4">
               <img
                 src="/icons/search.svg"
-                class="h-[1em] opacity-50"
+                class="h-4 opacity-50"
                 alt="Search icon"
               />Search Student
             </h2>
+            <div v-if="selectedStudent">
+              <div
+                class="flex items-center gap-3 justify-between bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200"
+              >
+                <div>
+                  <div class="font-semibold text-gray-800">
+                    {{ selectedStudent.name }}
+                  </div>
+                  <div class="text-sm text-gray-600">
+                    {{ selectedStudent.email }}
+                  </div>
+                </div>
+                <button
+                  @click="selectedStudent = null"
+                  class="w-8 h-8 rounded-full hover:bg-red-100 hover:cursor-pointer flex items-center justify-center transition-colors"
+                  title="Remove student"
+                >
+                  <img src="/icons/trash.svg" class="w-5 h-5" />
+                </button>
+              </div>
+            </div>
             <div class="card-actions">
               <form
                 class="w-full flex flex-col gap-2"
                 @submit.prevent="
                   handleModal({
-                    searchString: studentSearch,
+                    searchString: selectedStudent
+                      ? selectedStudent.name
+                      : studentSearch,
                     searchType: 'student',
                     searchDate: selectedDate,
                   });
@@ -102,6 +125,7 @@
                 >
                 <input
                   v-model="studentSearch"
+                  v-show="!selectedStudent"
                   type="search"
                   id="studentSearchInputRef"
                   ref="studentSearchInputRef"
@@ -112,7 +136,9 @@
               <button
                 @click="
                   handleModal({
-                    searchString: studentSearch,
+                    searchString: selectedStudent
+                      ? selectedStudent.name
+                      : studentSearch,
                     searchType: 'student',
                     searchDate: selectedDate,
                   })
@@ -121,14 +147,34 @@
               >
                 <img
                   src="/icons/search.svg"
-                  class="h-[1em] opacity-50"
+                  class="h-4 opacity-50"
                   alt="Search icon"
                 />Search Records
               </button>
-              <p class="text-error">{{ searchError }}</p>
+              <div
+                v-if="filteredStudents.length > 0 && studentSearch"
+                class="absolute top-full left-0 right-0 bg-white border-2 border-gray-200 rounded-xl mt-2 max-h-64 overflow-y-auto z-20 shadow-xl"
+              >
+                <div
+                  v-for="student in filteredStudents"
+                  :key="student.email"
+                  @click="
+                    selectedStudent = student;
+                    studentSearch = '';
+                  "
+                  class="p-4 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors"
+                >
+                  <div class="font-semibold text-gray-800">
+                    {{ student.name }}
+                  </div>
+                  <div class="text-sm text-gray-500">{{ student.email }}</div>
+                </div>
+              </div>
             </div>
+            <p class="text-error">{{ searchError }}</p>
           </div>
         </div>
+
         <div class="card card-md space-y-6">
           <div class="card-body">
             <h2 class="card-title">Select Date</h2>
@@ -188,6 +234,7 @@
 </template>
 
 <script setup lang="ts">
+import fake_data from "../../public/fake_data.json";
 const showDataModal = ref(false);
 const studentSearch = ref("");
 const searchError = ref("");
@@ -199,6 +246,13 @@ const searchParams = ref({
 });
 const isDateSelected = ref(false);
 const selectedDate = ref("");
+const students = ref<StudentLookup[]>([]);
+const selectedStudent = ref<{
+  name: string;
+  email: string;
+  display: string;
+} | null>(null);
+const config = useRuntimeConfig();
 
 const activities = [
   "FTC Robotics",
@@ -213,6 +267,18 @@ const activities = [
   "Football Practice",
 ];
 const userStore = useUserStore();
+
+const filteredStudents = computed(() => {
+  if (!Array.isArray(students.value) || studentSearch.value == "") return [];
+  const unfilteredStudents = students.value.map((student) => ({
+    name: student.name,
+    email: student.email,
+    display: `${student.name} | ${student.email}`,
+  }));
+  return unfilteredStudents.filter((student) =>
+    student.display.includes(studentSearch.value)
+  );
+});
 
 function handleModal(params: SearchParams) {
   if (params.searchType === "student" && params.searchString === "") {
@@ -237,5 +303,47 @@ function handleModal(params: SearchParams) {
   searchParams.value = params;
 
   showDataModal.value = true;
+}
+
+const fetchLookup = async () => {
+  try {
+    const response = await fetch(
+      `${config.public.backendUrl}/students/lookup/`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    students.value = data.students_data;
+  } catch (error) {
+    console.error("Error fetching students:", error);
+  }
+};
+
+/*
+TEMPORARY DATA
+ */
+students.value = fake_data.map((student) => ({
+  name: student.name,
+  homeroom: student.homeroom,
+  grad_year: student.grad_year,
+  email: student.email,
+  caass_id: String(student.caass_id),
+  osis: student.osis,
+})) as StudentLookup[];
+
+onMounted(() => {
+  //calls();
+  //setInterval(calls, 5);
+});
+
+function calls() {
+  fetchLookup();
 }
 </script>
