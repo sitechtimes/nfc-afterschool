@@ -147,7 +147,7 @@
               >
                 <img
                   src="/icons/search.svg"
-                  class="h-[1rem] opacity-50"
+                  class="h-4 opacity-50"
                   alt="Search icon"
                 />Search Records
               </button>
