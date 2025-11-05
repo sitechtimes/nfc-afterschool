@@ -51,7 +51,6 @@ async function handleLogin() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify({
         username: form.value.username,
@@ -66,7 +65,12 @@ async function handleLogin() {
     }
     const data = await response.json();
 
-    const token = data.key || data.token;
+    const token = data.access || data.key || data.token;
+    if (!token) {
+      error.value = "Invalid response from server. Token not found.";
+      return;
+    }
+
     if (typeof window !== "undefined") {
       localStorage.setItem("token", token);
     }
