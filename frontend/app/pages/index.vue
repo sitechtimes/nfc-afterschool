@@ -301,20 +301,18 @@ function handleModal(params: SearchParams) {
 
 const fetchLookup = async () => {
   try {
-    const response = await fetch(
-      `${config.public.backendUrl}/students/lookup/`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    );
+    const response = await fetch(`${config.public.backendUrl}/api/students/`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
     students.value = data.students_data;
+    console.log(data);
   } catch (error) {
     console.error("Error fetching students:", error);
   }
@@ -333,7 +331,7 @@ students.value = fake_data.map((student) => ({
 })) as StudentLookup[];
 
 onMounted(() => {
-  //calls();
+  calls();
   //setInterval(calls, 5);
 });
 
