@@ -308,6 +308,10 @@ const fetchLookup = async () => {
       },
     });
     if (!response.ok) {
+      if (response.status === 401) {
+        userStore.clearUser();
+        navigateTo("/login");
+      }
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
