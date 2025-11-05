@@ -68,14 +68,14 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:3000",
-    "http://127.0.0.1:3000",  
+    "http://127.0.0.1:3000",
 ]
 
 
 # SESSION_COOKIE_SAMESITE = None
-# SESSION_COOKIE_SECURE = True  
+# SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SAMESITE = None # fix this before prod
-# CSRF_COOKIE_SECURE = True  
+# CSRF_COOKIE_SECURE = True
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
@@ -83,31 +83,31 @@ CORS_ALLOW_CREDENTIALS = True
 
 # Allow specific headers for CORS requests
 CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
 ]
 
 # Allow specific HTTP methods
 CORS_ALLOW_METHODS = [
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
 ]
 
 # Expose headers that frontend might need
 CORS_EXPOSE_HEADERS = [
-    'content-type',
-    'authorization',
+    "content-type",
+    "authorization",
 ]
 
 # Preflight cache time
@@ -167,7 +167,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-ALLOWED_HOSTS = ["http://localhost:8000"]
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 

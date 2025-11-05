@@ -53,8 +53,7 @@ class ScanInstanceViewSet(viewsets.ModelViewSet):
 
 
 BASE_URL = settings.NFC_BASE_URL
-NFC_USERNAME = settings.NFC_USERNAME
-NFC_PASSWORD = settings.NFC_PASSWORD
+NFC_API_KEY = settings.NFC_API_KEY
 
 
 def fetch_remote(endpoint):
