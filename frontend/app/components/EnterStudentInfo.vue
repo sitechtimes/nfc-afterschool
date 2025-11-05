@@ -19,19 +19,30 @@
 
         <div class="dropdown dropdown-right w-full">
           <div tabindex="0" role="button" class="btn m-1 rounded-box w-full">
-            Activities list
+            {{ studentActivity || "Select Activity" }}
           </div>
 
           <ul
             tabindex="-1"
             class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
           >
-            <li v-for="activity in limitedViewDropdown" :key="activity">
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="Search..."
+              class="input input-sm mb-2 w-full"
+            />
+            <li v-for="activity in filteredActivities" :key="activity">
               <button @click="choiceSelector(activity)">{{ activity }}</button>
+            </li>
+            <li
+              v-if="filteredActivities.length === 0"
+              class="text-center text-sm opacity-50"
+            >
+              No results
             </li>
           </ul>
         </div>
-        <!-- Above is the daisy rewrite so I dont forget at home, also not selecting for some reason -->
 
         <label class="flex flex-col text-gray-700">
           Name:
@@ -63,12 +74,20 @@ const dialog = ref();
 const studentActivity = ref("");
 const studentName = ref("");
 const studentEmail = ref("");
+const searchQuery = ref("");
 const listOfActivities = useActivityStore();
 const limitedViewDropdown = listOfActivities.activities.slice(0, 4);
 
 function choiceSelector(x: string) {
   studentActivity.value = x;
 }
+
+const filteredActivities = computed(() => {
+  if (!searchQuery.value.trim()) return limitedViewDropdown;
+  return listOfActivities.activities.filter((a: string) =>
+    a.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+});
 
 function openInfoEnterPage() {
   studentInfoScreenOpen.value = true;
