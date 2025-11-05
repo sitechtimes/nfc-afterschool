@@ -16,33 +16,22 @@
         class="flex flex-col gap-4"
       >
         <label class="flex flex-col text-secondary-content"> Activity </label>
-        <div class="dropdown dropdown-bottom dropdown-center">
-          <div tabindex="0" role="button" class="btn m-1">Click ⬇️</div>
+
+        <div class="dropdown dropdown-right w-full">
+          <div tabindex="0" role="button" class="btn m-1 rounded-box w-full">
+            Activities list
+          </div>
 
           <ul
             tabindex="-1"
             class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
           >
-            <li
-              v-for="activity in limitedViewDropdown"
-              :key="activity"
-              @click="test"
-            >
-              <button v-bind="studentActivity">{{ activity }}</button>
+            <li v-for="activity in limitedViewDropdown" :key="activity">
+              <button @click="choiceSelector(activity)">{{ activity }}</button>
             </li>
           </ul>
         </div>
         <!-- Above is the daisy rewrite so I dont forget at home, also not selecting for some reason -->
-        <select
-          name="activity-choice"
-          v-model="studentActivity"
-          id="AC"
-          class="select"
-        >
-          <option v-for="activity in limitedViewDropdown" :key="activity">
-            {{ activity }}
-          </option>
-        </select>
 
         <label class="flex flex-col text-gray-700">
           Name:
@@ -75,11 +64,10 @@ const studentActivity = ref("");
 const studentName = ref("");
 const studentEmail = ref("");
 const listOfActivities = useActivityStore();
-const limitedViewDropdown = listOfActivities.activities.slice(0, 8);
-const TestThing = null;
+const limitedViewDropdown = listOfActivities.activities.slice(0, 4);
 
-function test() {
-  console.log("test");
+function choiceSelector(x: string) {
+  studentActivity.value = x;
 }
 
 function openInfoEnterPage() {
@@ -100,6 +88,7 @@ function submitStudentData() {
     activity: studentActivity.value,
     date: todayFormatted,
   };
+  studentActivity.value = "";
   studentName.value = "";
   studentEmail.value = "";
   studentActivity.value = "";
