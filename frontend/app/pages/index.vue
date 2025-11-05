@@ -6,10 +6,7 @@
   />
 
   <div class="p-4 w-full">
-    <button
-      @click="userStore.clearUser"
-      class="absolute top-0 left-0 w-10 btn btn-primary"
-    >
+    <button class="absolute top-0 left-0 w-10 btn btn-primary">
       test logout
     </button>
     <div class="header flex flex-col text-center gap-2 py-8">

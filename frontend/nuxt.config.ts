@@ -20,6 +20,8 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
-    backendUrl: "",
+    public: {
+      backendUrl: "",
+    },
   },
 });
