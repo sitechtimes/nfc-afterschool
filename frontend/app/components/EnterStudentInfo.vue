@@ -30,11 +30,11 @@
               placeholder="Search..."
               class="input input-sm mb-2 w-full"
             />
-            <li v-for="activity in filteredActivities" :key="activity">
+            <li v-for="activity in searchResults" :key="activity">
               <button @click="choiceSelector(activity)">{{ activity }}</button>
             </li>
             <li
-              v-if="filteredActivities.length === 0"
+              v-if="searchResults.length === 0"
               class="text-center text-sm opacity-50"
             >
               No results
@@ -73,9 +73,9 @@ const studentName = ref("");
 const studentEmail = ref("");
 const searchQuery = ref("");
 const listOfActivities = useActivityStore();
-const limitedViewDropdown = listOfActivities.activities.slice(0, 4);
-const filteredActivities = computed(() => {
-  if (!searchQuery.value.trim()) return limitedViewDropdown;
+const initialActivites = listOfActivities.activities.slice(0, 4);
+const searchResults = computed(() => {
+  if (!searchQuery.value.trim()) return initialActivites;
   return listOfActivities.activities.filter((a: string) =>
     a.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
