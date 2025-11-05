@@ -16,12 +16,10 @@
         class="flex flex-col gap-4"
       >
         <label class="flex flex-col text-secondary-content"> Activity </label>
-
         <div class="dropdown dropdown-right w-full">
           <div tabindex="0" role="button" class="btn m-1 rounded-box w-full">
             {{ studentActivity || "Select Activity" }}
           </div>
-
           <ul
             tabindex="-1"
             class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
@@ -43,7 +41,6 @@
             </li>
           </ul>
         </div>
-
         <label class="flex flex-col text-gray-700">
           Name:
           <input v-model="studentName" type="text" required class="input" />
@@ -77,17 +74,16 @@ const studentEmail = ref("");
 const searchQuery = ref("");
 const listOfActivities = useActivityStore();
 const limitedViewDropdown = listOfActivities.activities.slice(0, 4);
-
-function choiceSelector(x: string) {
-  studentActivity.value = x;
-}
-
 const filteredActivities = computed(() => {
   if (!searchQuery.value.trim()) return limitedViewDropdown;
   return listOfActivities.activities.filter((a: string) =>
     a.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 });
+
+function choiceSelector(x: string) {
+  studentActivity.value = x;
+}
 
 function openInfoEnterPage() {
   studentInfoScreenOpen.value = true;
