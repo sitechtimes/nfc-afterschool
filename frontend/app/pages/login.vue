@@ -9,6 +9,7 @@
       <div class="card-body justify-center h-fit">
         <h2 class="card-title justify-center">Enter account information</h2>
         <form @submit.prevent="handleLogin" class="flex flex-col w-full gap-2">
+          <h3>Username:</h3>
           <input
             class="input w-full bg-base-200"
             type="text"
@@ -16,6 +17,7 @@
             placeholder="Enter Username"
             required
           />
+          <h3>Password:</h3>
           <input
             class="input w-full bg-base-200"
             type="password"
