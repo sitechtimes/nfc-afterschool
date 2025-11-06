@@ -21,7 +21,7 @@
             <div class="flex justify-between">
               <h2 class="card-title">Avatar Attendance Records</h2>
               <div class="badge badge-ghost hidden md:block">
-                10 activities today
+                {{ activities.length }} activities today
               </div>
             </div>
             <table class="table table-zebra">
@@ -33,13 +33,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="activity in activities" :key="activity">
-                  <th>{{ activity }}</th>
+                <tr v-for="activity in activities" :key="activity.id">
+                  <th>{{ activity.name }}</th>
                   <td>
                     <button
                       @click="
                         handleModal({
-                          searchString: activity,
+                          searchString: activity.name,
                           searchType: 'activity',
                           searchDate: selectedDate,
                         })
@@ -53,7 +53,7 @@
                     <button
                       @click="
                         handleModal({
-                          searchString: activity,
+                          searchString: activity.name,
                           searchType: 'activity',
                           searchDate: 'today',
                         })
@@ -228,7 +228,7 @@
 </template>
 
 <script setup lang="ts">
-import fake_data from "../../public/fake_data.json";
+// import fake_data from "../../public/fake_data.json";
 const showDataModal = ref(false);
 const studentSearch = ref("");
 const searchError = ref("");
@@ -248,18 +248,20 @@ const selectedStudent = ref<{
 } | null>(null);
 const config = useRuntimeConfig();
 
-const activities = [
-  "FTC Robotics",
-  "Town Hall Meeting",
-  "Science Fair",
-  "Math Olympiad",
-  "Art Exhibition",
-  "Debate Club",
-  "Photography Club",
-  "Music Rehearsal",
-  "Swimming Practice",
-  "Football Practice",
-];
+const activities = ref<Activity[]>([
+  // "FTC Robotics",
+  // "Town Hall Meeting",
+  // "Science Fair",
+  // "Math Olympiad",
+  // "Art Exhibition",
+  // "Debate Club",
+  // "Photography Club",
+  // "Music Rehearsal",
+  // "Swimming Practice",
+  // "Football Practice",
+]);
+
+const scanInstances = ref<ScanInstance[]>([]);
 const userStore = useUserStore();
 
 const filteredStudents = computed(() => {
@@ -270,7 +272,9 @@ const filteredStudents = computed(() => {
     display: `${student.name} | ${student.email}`,
   }));
   return unfilteredStudents.filter((student) =>
-    student.display.includes(studentSearch.value)
+    student.display
+      .toLowerCase()
+      .includes(studentSearch.value.toLowerCase().trim())
   );
 });
 
@@ -295,7 +299,6 @@ function handleModal(params: SearchParams) {
     }
   }
   searchParams.value = params;
-
   showDataModal.value = true;
 }
 
@@ -315,31 +318,78 @@ const fetchLookup = async () => {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    students.value = data.students_data;
-    console.log(data);
+    students.value = data;
   } catch (error) {
     console.error("Error fetching students:", error);
   }
 };
 
+const fetchActivities = async () => {
+  try {
+    const response = await fetch(`${config.public.backendUrl}/api/events/`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    if (!response.ok) {
+      if (response.status === 401) {
+        userStore.clearUser();
+        navigateTo("/login");
+      }
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    activities.value = data;
+  } catch (error) {
+    console.error("Error fetching activities:", error);
+  }
+};
+
+const fetchInstances = async () => {
+  try {
+    const response = await fetch(
+      `${config.public.backendUrl}/api/scan-instances/`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      if (response.status === 401) {
+        userStore.clearUser();
+        navigateTo("/login");
+      }
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    scanInstances.value = data;
+  } catch (error) {
+    console.error("Error fetching activities:", error);
+  }
+};
 /*
 TEMPORARY DATA
  */
-students.value = fake_data.map((student) => ({
-  name: student.name,
-  homeroom: student.homeroom,
-  grad_year: student.grad_year,
-  email: student.email,
-  caass_id: String(student.caass_id),
-  osis: student.osis,
-})) as StudentLookup[];
 
+// students.value = fake_data.map((student) => ({
+//   name: student.name,
+//   homeroom: student.homeroom,
+//   gradYear: student.grad_year,
+//   email: student.email,
+//   caassID: String(student.caass_id),
+//   osis: student.osis,
+// })) as StudentLookup[];
 onMounted(() => {
   calls();
-  //setInterval(calls, 5);
+  setInterval(calls, 5000);
 });
 
 function calls() {
   fetchLookup();
+  fetchActivities();
+  fetchInstances();
 }
 </script>

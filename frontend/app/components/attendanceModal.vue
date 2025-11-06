@@ -28,13 +28,15 @@
 </template>
 
 <script setup lang="ts">
-import data from "../assets/fake_data.json";
 const emit = defineEmits(["close"]);
-const props = defineProps({ searchParams: { type: Object, required: true } });
+const props = defineProps({
+  searchParams: { type: Object, required: true },
+  data: { type: Object, required: true },
+});
 const filteredData = computed(() => {
-  if (!props.searchParams) return data;
-  return data.filter(
-    (item) =>
+  if (!props.searchParams) return props.data;
+  return props.data.filter(
+    (item: ScanInstance) =>
       (props.searchParams.searchDate === "" ||
         item.date === props.searchParams.searchDate) &&
       (props.searchParams.searchType !== "student" ||
