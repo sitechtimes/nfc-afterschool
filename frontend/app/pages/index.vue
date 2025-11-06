@@ -2,6 +2,7 @@
   <attendanceModal
     v-if="showDataModal"
     :searchParams="searchParams"
+    :data="scanInstances"
     @close="showDataModal = false"
   />
 
@@ -365,7 +366,25 @@ const fetchInstances = async () => {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    scanInstances.value = data;
+    scanInstances.value = data.map((instance: ScanInstanceAPI) => ({
+      id: instance.id,
+      studentName:
+        students.value.find((s) => s.id === instance.student)?.name ||
+        "Unknown",
+      studentEmail:
+        students.value.find((s) => s.id === instance.student)?.email ||
+        "Unknown",
+      date: new Date(instance.time.slice(0, 10)).toLocaleDateString("en-US"),
+
+      /*
+      THIS IS PROVIDING DAY EARLIER FIX TODO
+      */
+
+      time: instance.time.slice(10, -1),
+      activity:
+        activities.value.find((a) => a.id === instance.event)?.name || "Unkown",
+    }));
+    console.log(scanInstances);
   } catch (error) {
     console.error("Error fetching activities:", error);
   }

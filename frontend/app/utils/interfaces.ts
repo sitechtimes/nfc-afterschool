@@ -23,9 +23,18 @@ export interface Activity {
   restricted: boolean;
 }
 
-export interface ScanInstance {
+export interface ScanInstanceAPI {
   id: string;
   student: string;
   time: string;
   event: string;
+}
+
+export interface ScanInstance {
+  id: string;
+  studentName: string;
+  studentEmail: string;
+  date: string;
+  time: string;
+  activity: string;
 }

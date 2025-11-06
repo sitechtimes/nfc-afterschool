@@ -17,9 +17,10 @@
           <tr v-for="instance in filteredData" :key="instance.student_cassid">
             <th>{{ instance.activity }}</th>
             <td>{{ instance.date }}</td>
-            <td>{{ instance.student_name }}</td>
-            <td>{{ instance.student_email }}</td>
-            <td>{{ instance.student_cassid }}</td>
+            <td>{{ instance.studentName }}</td>
+            <td>{{ instance.studentEmail }}</td>
+            <!--fix tis-->
+            <td>{{ instance.studentCaassID }}</td>
           </tr>
         </tbody>
       </table>
@@ -31,7 +32,7 @@
 const emit = defineEmits(["close"]);
 const props = defineProps({
   searchParams: { type: Object, required: true },
-  data: { type: Object, required: true },
+  data: { type: Object, required: true }, //scaninstances
 });
 const filteredData = computed(() => {
   if (!props.searchParams) return props.data;
@@ -40,10 +41,10 @@ const filteredData = computed(() => {
       (props.searchParams.searchDate === "" ||
         item.date === props.searchParams.searchDate) &&
       (props.searchParams.searchType !== "student" ||
-        item.student_name
+        item.studentName
           ?.toLowerCase()
           .includes(props.searchParams.searchString.toLowerCase()) ||
-        item.student_email
+        item.studentEmail
           ?.toLowerCase()
           .includes(props.searchParams.searchString.toLowerCase())) &&
       (props.searchParams.searchType !== "activity" ||
