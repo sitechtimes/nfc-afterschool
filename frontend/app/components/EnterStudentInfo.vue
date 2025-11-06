@@ -34,7 +34,7 @@
               <button @click="choiceSelector(activity)">{{ activity }}</button>
             </li>
             <li
-              v-if="searchResults.length === 0"
+              v-if="!searchResults.length"
               class="text-center text-sm opacity-50"
             >
               No results
@@ -81,8 +81,8 @@ const searchResults = computed(() => {
   );
 });
 
-function choiceSelector(x: string) {
-  studentActivity.value = x;
+function choiceSelector(choice: string) {
+  studentActivity.value = choice;
 }
 
 function openInfoEnterPage() {
