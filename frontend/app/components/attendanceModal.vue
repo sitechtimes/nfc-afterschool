@@ -10,7 +10,7 @@
             <th>Date</th>
             <th>Student Name</th>
             <th>Student Email</th>
-            <th>Student CASSID</th>
+            <th>Time</th>
           </tr>
         </thead>
         <tbody>
@@ -19,8 +19,7 @@
             <td>{{ instance.date }}</td>
             <td>{{ instance.studentName }}</td>
             <td>{{ instance.studentEmail }}</td>
-            <!--fix tis-->
-            <td>{{ instance.studentCaassID }}</td>
+            <td>{{ instance.time }}</td>
           </tr>
         </tbody>
       </table>

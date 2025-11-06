@@ -22,7 +22,7 @@
             <div class="flex justify-between">
               <h2 class="card-title">Avatar Attendance Records</h2>
               <div class="badge badge-ghost hidden md:block">
-                {{ activities.length }} activities today
+                {{ activities.length }} activities
               </div>
             </div>
             <table class="table table-zebra">
@@ -374,17 +374,19 @@ const fetchInstances = async () => {
       studentEmail:
         students.value.find((s) => s.id === instance.student)?.email ||
         "Unknown",
-      date: new Date(instance.time.slice(0, 10)).toLocaleDateString("en-US"),
+      date: (() => {
+        const dateStr = instance.time.slice(0, 10);
+        const [year, month, day] = dateStr.split("-").map(Number);
+        if (year && month && day) {
+          return new Date(year, month - 1, day).toLocaleDateString("en-US");
+        }
+        return dateStr;
+      })(),
 
-      /*
-      THIS IS PROVIDING DAY EARLIER FIX TODO
-      */
-
-      time: instance.time.slice(10, -1),
+      time: instance.time.slice(11, -1),
       activity:
         activities.value.find((a) => a.id === instance.event)?.name || "Unkown",
     }));
-    console.log(scanInstances);
   } catch (error) {
     console.error("Error fetching activities:", error);
   }
@@ -403,7 +405,7 @@ TEMPORARY DATA
 // })) as StudentLookup[];
 onMounted(() => {
   calls();
-  setInterval(calls, 5000);
+  setInterval(calls, 10000);
 });
 
 function calls() {
