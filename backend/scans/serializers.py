@@ -24,41 +24,6 @@ class StudentSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "homeroom", "gradYear", "email", "caassID"]
 
 
-class EventSerializer(serializers.ModelSerializer):
-    allowed = serializers.SlugRelatedField(
-        slug_field="name",
-        queryset=Event.objects.all(),
-        many=True,
-    )
-
-    class Meta:
-        model = Event
-        fields = [
-            "id",
-            "name",
-            "time_start",
-            "scans",
-            "time_end",
-            "restricted",
-            "allowed",
-        ]
-
-
-class DeviceSerializer(serializers.ModelSerializer):
-    assigned_to = EventSerializer(read_only=True)
-
-    class Meta:
-        model = Device
-        fields = [
-            "id",
-            "last_known_ip",
-            "last_seen",
-            "assigned_to",
-            "device_type",
-            "online",
-        ]
-
-
 class ScanInstanceSerializer(serializers.ModelSerializer):
     student = StudentSerializer()
 
@@ -82,4 +47,19 @@ class EventSerializer(serializers.ModelSerializer):
             "restricted",
             "allowed",
             "type",
+        ]
+
+
+class DeviceSerializer(serializers.ModelSerializer):
+    assigned_to = EventSerializer(read_only=True)
+
+    class Meta:
+        model = Device
+        fields = [
+            "id",
+            "last_known_ip",
+            "last_seen",
+            "assigned_to",
+            "device_type",
+            "online",
         ]
