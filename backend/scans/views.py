@@ -1,7 +1,7 @@
 from django.conf import settings
 from rest_framework import viewsets, filters
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser
 from .models import *
 from django.contrib.auth.models import User
 from .serializers import *
@@ -11,7 +11,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import action
 
-# according to ben, the only user is an admin so normal is authenticatde should be fine
 
 BASE_URL = settings.NFC_BASE_URL
 
@@ -24,38 +23,39 @@ def fetch_remote(endpoint):
 
 
 class BaseSyncView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
     model = None
+    serializer_class = None
     fetch_url = None
-    related_fields = {}
 
     def syncData(self, request):
-        if not self.model or not self.fetch_url:
+        if not self.model or not self.fetch_url or not self.serializer_class:
             return Response(
-                {"status": "error", "message": "Model or fetch_url not defined"},
+                {
+                    "status": "error",
+                    "message": "model, serializer_class, or fetch_url missing",
+                },
                 status=400,
             )
 
         try:
-            data_list = fetch_remote(self.fetch_url)
+            data = fetch_remote(self.fetch_url)
 
-            for data in data_list:
-                for field, related_model in self.related_fields.items():
-                    related_id = data.pop(f"{field}_id", None)
+            for item in data:
+                instance = None
+                obj_id = item.get("id")
 
+                if obj_id:
                     try:
-                        data[field] = related_model.objects.get(id=related_id)
-                    except related_model.DoesNotExist:
-                        raise Exception(
-                            f"Related {related_model.__name__} with id {related_id} does not exist"
-                        )
+                        instance = self.model.objects.get(id=obj_id)
+                    except self.model.DoesNotExist:
+                        instance = None  
 
-                self.model.objects.update_or_create(id=data["id"], defaults=data)
+                serializer = self.serializer_class(instance=instance, data=item)
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
 
-            return Response(
-                {"status": "success", "message": f"{self.model.__name__} synchronized"},
-                status=200,
-            )
+            return Response({"status": "success"}, status=200)
 
         except Exception as e:
             return Response({"status": "error", "message": str(e)}, status=500)
@@ -67,7 +67,7 @@ class UserViewSet(
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
 
 class StudentViewSet(viewsets.ModelViewSet, BaseSyncView):
@@ -75,7 +75,7 @@ class StudentViewSet(viewsets.ModelViewSet, BaseSyncView):
     serializer_class = StudentSerializer
     filterset_class = StudentFilter
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
     model = Student
     fetch_url = "students/list/"
 
@@ -84,44 +84,16 @@ class StudentViewSet(viewsets.ModelViewSet, BaseSyncView):
         return self.syncData(request)
 
 
-class EventViewSet(viewsets.ModelViewSet):
-    # not base because m2m im not doing allat
+class EventViewSet(BaseSyncView,viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     filterset_class = EventFilter
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
     @action(detail=False, methods=["post"])
     def sync(self, request):
-        try:
-            data_list = fetch_remote("events/list/")
-            for data in data_list:
-                microservice_id = data.pop("MicroService_id", None)
-                try:
-                    data["MicroService"] = MicroService.objects.get(id=microservice_id)
-                except MicroService.DoesNotExist:
-                    raise Exception(
-                        f"Related MicroService with id {microservice_id} does not exist"
-                    )
-
-                allowed_ids = data.pop("allowed_ids", [])
-                scan_ids = data.pop("scan_ids", [])
-
-                event, created = Event.objects.update_or_create(
-                    id=data["id"], defaults=data
-                )
-                if allowed_ids:
-                    event.allowed.set(Student.objects.filter(id__in=allowed_ids))
-                if scan_ids:
-                    event.scans.set(ScanInstance.objects.filter(id__in=scan_ids))
-
-            return Response(
-                {"status": "success", "message": "Events synchronized"}, status=200
-            )
-
-        except Exception as e:
-            return Response({"status": "error", "message": str(e)}, status=500)
+        return self.syncData(request)
 
 
 class DeviceViewSet(BaseSyncView, viewsets.ModelViewSet):
@@ -129,10 +101,9 @@ class DeviceViewSet(BaseSyncView, viewsets.ModelViewSet):
     serializer_class = DeviceSerializer
     filterset_class = DeviceFilter
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
     model = Device
     fetch_url = "devices/list/"
-    related_fields = {"assigned_to": Event}
 
     @action(detail=False, methods=["post"])
     def sync(self, request):
@@ -144,10 +115,9 @@ class ScanInstanceViewSet(BaseSyncView, viewsets.ModelViewSet):
     serializer_class = ScanInstanceSerializer
     filterset_class = ScanInstanceFilter
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
     model = ScanInstance
     fetch_url = "connect/list/scans/"
-    related_fields = {"event": Event, "student": Student}
 
     @action(detail=False, methods=["post"])
     def sync(self, request):
