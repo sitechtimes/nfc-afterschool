@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Student, ScanInstance, Event, Device
+from .models import MicroService, Student, ScanInstance, Event, Device
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -22,49 +22,45 @@ class UserSerializer(serializers.ModelSerializer):
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = [
-            "id",
-            "name",
-            "homeroom",
-            "gradYear",
-            "email",
-            "osis",
-            "caassID",
-        ]
+        fields = ["id", "name", "homeroom", "gradYear", "email", "caassID"]
+
+
+class ScanInstanceSerializer(serializers.ModelSerializer):
+    student = StudentSerializer()
+
+    class Meta:
+        model = ScanInstance
+        fields = ["id", "student", "time"]
 
 
 class EventSerializer(serializers.ModelSerializer):
+    allowed = StudentSerializer(many=True, read_only=True)
+    scans = ScanInstanceSerializer(many=True, read_only=True)
+
     class Meta:
         model = Event
         fields = [
             "id",
             "name",
-            "type",
             "time_start",
             "time_end",
+            "scans",
             "restricted",
-        ]
-
-
-class ScanInstanceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ScanInstance
-        fields = [
-            "id",
-            "student",
-            "event",
-            "time",
+            "allowed",
+            "type",
         ]
 
 
 class DeviceSerializer(serializers.ModelSerializer):
+    assigned_to = EventSerializer(read_only=True)
+
     class Meta:
         model = Device
         fields = [
             "id",
-            "assigned_event",
             "last_known_ip",
             "last_seen",
+            "assigned_to",
             "device_type",
             "online",
         ]

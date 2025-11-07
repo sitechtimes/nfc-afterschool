@@ -25,7 +25,6 @@ load_dotenv()
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 NFC_BASE_URL = os.getenv("NFC_BASE_URL")
-NFC_API_KEY = os.getenv("NFC_API_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
