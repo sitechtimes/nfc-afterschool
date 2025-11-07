@@ -4,7 +4,7 @@
   >
     <h1 class="text-3xl font-bold">After School Attendance</h1>
     <div
-      class="card card-xl bg-neutral md:w-1/2 w-4/5 justify-center shadow-xl md:hover:shadow-2xl hover:md:scale-101 transition duration-700"
+      class="card card-xl bg-neutral md:w-fit w-4/5 justify-center shadow-xl md:hover:shadow-2xl hover:md:scale-101 transition duration-700"
     >
       <div class="card-body justify-center h-fit">
         <h2 class="card-title justify-center">Enter account information</h2>
@@ -26,7 +26,7 @@
             required
           />
           <button
-            class="btn btn-primary btn-block active:scale-101"
+            class="btn btn-primary btn-block active:scale-101 mt-5"
             type="submit"
           >
             Login
