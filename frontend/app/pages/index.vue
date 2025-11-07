@@ -38,13 +38,7 @@
                   <th>{{ activity.name }}</th>
                   <td>
                     <button
-                      @click="
-                        handleModal({
-                          searchString: activity.name,
-                          searchType: 'activity',
-                          searchDate: selectedDate,
-                        })
-                      "
+                      @click="openActivityModal(activity.name)"
                       class="btn btn-sm btn-outline btn-wide"
                     >
                       Click to view
@@ -52,13 +46,7 @@
                   </td>
                   <td>
                     <button
-                      @click="
-                        handleModal({
-                          searchString: activity.name,
-                          searchType: 'activity',
-                          searchDate: 'today',
-                        })
-                      "
+                      @click="openActivityModal(activity.name, 'today')"
                       class="btn btn-sm btn-outline btn-wide"
                     >
                       Click to view
@@ -82,41 +70,42 @@
             </h2>
             <div v-if="selectedStudent">
               <div
-                class="flex items-center gap-3 justify-between bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200"
+                class="flex flex-wrap items-center gap-3 justify-between bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200"
               >
-                <div>
-                  <div class="font-semibold text-gray-800">
+                <div class="min-w-0">
+                  <div class="font-semibold text-gray-800 break-words">
                     {{ selectedStudent.name }}
                   </div>
-                  <div class="text-sm text-gray-600">
+                  <div class="text-sm text-gray-600 break-words">
                     {{ selectedStudent.email }}
+                  </div>
+                  <div class="text-xs text-gray-500">
+                    OSIS: {{ selectedStudent.osis || "Unknown" }}
                   </div>
                 </div>
                 <button
                   @click="selectedStudent = null"
-                  class="w-8 h-8 rounded-full hover:bg-red-100 hover:cursor-pointer flex items-center justify-center transition-colors"
+                  class="btn btn-ghost btn-circle btn-sm text-error flex-shrink-0"
                   title="Remove student"
                 >
-                  <img src="/icons/trash.svg" class="w-5 h-5" />
+                  <img
+                    src="/icons/trash.svg"
+                    class="w-4 h-4"
+                    alt="Remove selected student"
+                  />
                 </button>
               </div>
             </div>
-            <div class="card-actions">
+            <div class="card-actions relative">
               <form
                 class="w-full flex flex-col gap-2"
                 @submit.prevent="
-                  handleModal({
-                    searchString: selectedStudent
-                      ? selectedStudent.name
-                      : studentSearch,
-                    searchType: 'student',
-                    searchDate: selectedDate,
-                  });
+                  openStudentModal();
                   studentSearchInputRef.blur();
                 "
               >
                 <label class="sr-only" for="studentSearchInputRef"
-                  >Search by student name or email</label
+                  >Search by student name, email, or OSIS</label
                 >
                 <input
                   v-model="studentSearch"
@@ -125,19 +114,11 @@
                   id="studentSearchInputRef"
                   ref="studentSearchInputRef"
                   class="input w-full bg-base-200"
-                  placeholder="Search student name/email"
+                  placeholder="Search student name/email/OSIS"
                 />
               </form>
               <button
-                @click="
-                  handleModal({
-                    searchString: selectedStudent
-                      ? selectedStudent.name
-                      : studentSearch,
-                    searchType: 'student',
-                    searchDate: selectedDate,
-                  })
-                "
+                @click="openStudentModal()"
                 class="btn btn-outline btn-block"
               >
                 <img
@@ -152,7 +133,7 @@
               >
                 <div
                   v-for="student in filteredStudents"
-                  :key="student.email"
+                  :key="student.osis || student.email"
                   @click="
                     selectedStudent = student;
                     studentSearch = '';
@@ -162,7 +143,12 @@
                   <div class="font-semibold text-gray-800">
                     {{ student.name }}
                   </div>
-                  <div class="text-sm text-gray-500">{{ student.email }}</div>
+                  <div class="text-sm text-gray-500 break-words">
+                    {{ student.email }}
+                  </div>
+                  <div class="text-xs text-gray-400">
+                    OSIS: {{ student.osis || "Unknown" }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -243,9 +229,10 @@ const isDateSelected = ref(false);
 const selectedDate = ref("");
 const students = ref<StudentLookup[]>([]);
 const selectedStudent = ref<{
+  id?: string;
   name: string;
   email: string;
-  display: string;
+  osis: string;
 } | null>(null);
 const config = useRuntimeConfig();
 
@@ -266,23 +253,57 @@ const scanInstances = ref<ScanInstance[]>([]);
 const userStore = useUserStore();
 
 const filteredStudents = computed(() => {
-  if (!Array.isArray(students.value) || studentSearch.value == "") return [];
-  const unfilteredStudents = students.value.map((student) => ({
-    name: student.name,
-    email: student.email,
-    display: `${student.name} | ${student.email}`,
-  }));
-  return unfilteredStudents.filter((student) =>
-    student.display
-      .toLowerCase()
-      .includes(studentSearch.value.toLowerCase().trim())
-  );
+  if (!Array.isArray(students.value)) return [];
+  const query = studentSearch.value.trim().toLowerCase();
+  if (query === "") return [];
+  return students.value
+    .map((student) => ({
+      id: student.id,
+      name: student.name,
+      email: student.email,
+      osis: student.osis ?? "",
+    }))
+    .filter((student) =>
+      [student.name, student.email, student.osis].some(
+        (value) => value && value.toLowerCase().includes(query)
+      )
+    );
 });
 
+const studentSearchString = computed(() => {
+  if (selectedStudent.value) {
+    return (
+      selectedStudent.value.osis ||
+      selectedStudent.value.email ||
+      selectedStudent.value.name
+    );
+  }
+  return studentSearch.value;
+});
+
+function openStudentModal(searchDate?: string) {
+  handleModal({
+    searchString: studentSearchString.value,
+    searchType: "student",
+    searchDate: searchDate ?? selectedDate.value,
+  });
+}
+
+function openActivityModal(activityName: string, searchDate?: string) {
+  handleModal({
+    searchString: activityName,
+    searchType: "activity",
+    searchDate: searchDate ?? selectedDate.value,
+  });
+}
+
 function handleModal(params: SearchParams) {
-  if (params.searchType === "student" && params.searchString === "") {
-    searchError.value = "Please enter name/email of student";
-    return;
+  if (params.searchType === "student") {
+    params.searchString = params.searchString.trim();
+    if (params.searchString === "") {
+      searchError.value = "Please enter student name, email, or OSIS";
+      return;
+    }
   }
   searchError.value = "";
   if (!isDateSelected.value && params.searchDate !== "today") {
@@ -368,12 +389,20 @@ const fetchInstances = async () => {
     const data = await response.json();
     scanInstances.value = data.map((instance: ScanInstanceAPI) => ({
       id: instance.id,
-      studentName:
-        students.value.find((s) => s.id === instance.student)?.name ||
-        "Unknown",
-      studentEmail:
-        students.value.find((s) => s.id === instance.student)?.email ||
-        "Unknown",
+      ...((): {
+        studentName: string;
+        studentEmail: string;
+        studentOsis?: string;
+      } => {
+        const studentDetails = students.value.find(
+          (s) => s.id === instance.student
+        );
+        return {
+          studentName: studentDetails?.name || "Unknown",
+          studentEmail: studentDetails?.email || "Unknown",
+          studentOsis: studentDetails?.osis || undefined,
+        };
+      })(),
       date: (() => {
         const dateStr = instance.time.slice(0, 10);
         const [year, month, day] = dateStr.split("-").map(Number);

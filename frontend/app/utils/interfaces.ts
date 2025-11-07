@@ -34,6 +34,7 @@ export interface ScanInstance {
   id: string;
   studentName: string;
   studentEmail: string;
+  studentOsis?: string;
   date: string;
   time: string;
   activity: string;
