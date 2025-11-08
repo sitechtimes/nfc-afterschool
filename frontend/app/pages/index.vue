@@ -236,7 +236,6 @@ const selectedStudent = ref<{
 } | null>(null);
 const config = useRuntimeConfig();
 
-<<<<<<< HEAD
 const activities = ref<Activity[]>([
   // "FTC Robotics",
   // "Town Hall Meeting",
@@ -251,21 +250,6 @@ const activities = ref<Activity[]>([
 ]);
 
 const scanInstances = ref<ScanInstance[]>([]);
-=======
-const activities = [
-  "FTC Robotics",
-  "Town Hall Meeting",
-  "Science Fair",
-  "Math Olympiad",
-  "Art Exhibition",
-  "Debate Club",
-  "Photography Club",
-  "Music Rehearsal",
-  "Swimming Practice",
-  "Football Practice",
-];
-
->>>>>>> dev
 const userStore = useUserStore();
 
 const filteredStudents = computed(() => {
