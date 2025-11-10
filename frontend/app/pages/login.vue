@@ -30,6 +30,7 @@
             Login
           </button>
         </form>
+        <p v-if="error" class="text-error">{{ error }}</p>
       </div>
     </div>
   </div>
@@ -37,13 +38,54 @@
 
 <script setup lang="ts">
 const userStore = useUserStore();
+const config = useRuntimeConfig();
 const form = ref<{ username: string; password: string }>({
   username: "",
   password: "",
 });
+const error = ref("");
 
-function handleLogin() {
-  userStore.setUser({ username: "admin", role: "supervisor" });
-  navigateTo("/");
+async function handleLogin() {
+  try {
+    const response = await fetch(`${config.public.backendUrl}/api/token/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: form.value.username,
+        password: form.value.password,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      error.value = `Failed to login. Status: ${response.status}. ${errorText}`;
+      throw new Error(`Failed to login. Status: ${response.status}`);
+    }
+    const data = await response.json();
+
+    const token = data.access || data.key || data.token;
+    if (!token) {
+      error.value = "Invalid response from server. Token not found.";
+      return;
+    }
+
+    if (typeof window !== "undefined") {
+      localStorage.setItem("token", token);
+    }
+
+    userStore.logged = token;
+    navigateTo("/");
+  } catch (err) {
+    console.error("Error logging in:", err);
+    const errorMsg = err instanceof Error ? err.message : String(err);
+    if (errorMsg.includes("fetch") || errorMsg.includes("Failed to fetch")) {
+      error.value =
+        "Cannot connect to server. Please check if the backend is running.";
+    } else {
+      error.value = "Login failed. Please check your credentials.";
+    }
+  }
 }
 </script>

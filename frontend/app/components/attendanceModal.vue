@@ -10,16 +10,18 @@
             <th>Date</th>
             <th>Student Name</th>
             <th>Student Email</th>
-            <th>Student CASSID</th>
+            <th>Student OSIS</th>
+            <th>Time</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="instance in filteredData" :key="instance.student_cassid">
+          <tr v-for="instance in filteredData" :key="instance.id">
             <th>{{ instance.activity }}</th>
             <td>{{ instance.date }}</td>
-            <td>{{ instance.student_name }}</td>
-            <td>{{ instance.student_email }}</td>
-            <td>{{ instance.student_cassid }}</td>
+            <td>{{ instance.studentName }}</td>
+            <td>{{ instance.studentEmail }}</td>
+            <td>{{ instance.studentOsis || "Unknown" }}</td>
+            <td>{{ instance.time }}</td>
           </tr>
         </tbody>
       </table>
@@ -28,20 +30,27 @@
 </template>
 
 <script setup lang="ts">
-import data from "../assets/fake_data.json";
-const emit = defineEmits(["close"]);
-const props = defineProps({ searchParams: { type: Object, required: true } });
+const emit = defineEmits<{
+  close: [];
+}>();
+const props = defineProps<{
+  searchParams: SearchParams;
+  data: ScanInstance[];
+}>();
 const filteredData = computed(() => {
-  if (!props.searchParams) return data;
-  return data.filter(
-    (item) =>
+  if (!props.searchParams) return props.data;
+  return props.data.filter(
+    (item: ScanInstance) =>
       (props.searchParams.searchDate === "" ||
         item.date === props.searchParams.searchDate) &&
       (props.searchParams.searchType !== "student" ||
-        item.student_name
+        item.studentName
           ?.toLowerCase()
           .includes(props.searchParams.searchString.toLowerCase()) ||
-        item.student_email
+        item.studentEmail
+          ?.toLowerCase()
+          .includes(props.searchParams.searchString.toLowerCase()) ||
+        item.studentOsis
           ?.toLowerCase()
           .includes(props.searchParams.searchString.toLowerCase())) &&
       (props.searchParams.searchType !== "activity" ||

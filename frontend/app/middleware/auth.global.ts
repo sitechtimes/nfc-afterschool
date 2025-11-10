@@ -1,10 +1,16 @@
-export default defineNuxtRouteMiddleware((to) => {
-    if (typeof window === "undefined") return;
-    const user = localStorage.getItem("user");
-    if (!user && to.path !== "/login") {
-        return navigateTo("/login");
+export default defineNuxtRouteMiddleware(async (to) => {
+  if (typeof window === "undefined") return;
+
+  const token = localStorage.getItem("token");
+
+  if (to.name === "login") {
+    if (token) {
+      return navigateTo("/");
     }
-    if (user && to.path === "/login") {
-        return navigateTo("/");
-    }
+    return;
+  }
+
+  if (!token) {
+    return navigateTo("/login");
+  }
 });
