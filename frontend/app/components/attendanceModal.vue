@@ -44,7 +44,7 @@ const filteredData = computed(() => {
       (props.searchParams.searchDate === "" ||
         item.date === props.searchParams.searchDate) &&
       (props.searchParams.searchType !== "student" ||
-        item.studentName
+        (item.studentName
           ?.toLowerCase()
           .includes(props.searchParams.searchString.toLowerCase()) ||
         item.studentEmail
@@ -52,7 +52,7 @@ const filteredData = computed(() => {
             .includes(props.searchParams.searchString.toLowerCase()) ||
           item.studentOsis
             ?.toLowerCase()
-            .includes(props.searchParams.searchString.toLowerCase())) &&
+            .includes(props.searchParams.searchString.toLowerCase()))) &&
       (props.searchParams.searchType !== "activity" ||
         item.activity
           ?.toLowerCase()
