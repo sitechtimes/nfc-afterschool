@@ -414,7 +414,7 @@ const fetchInstances = async () => {
 
       time: instance.time.slice(11, -1),
       activity:
-        activities.value.find((a) => a.id === instance.event)?.name || "Unkown",
+        activities.value.find((a) => a.id === instance.event)?.name || "Unknown",
     }));
   } catch (error) {
     console.error("Error fetching activities:", error);
