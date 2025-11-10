@@ -417,7 +417,7 @@ const fetchInstances = async () => {
         activities.value.find((a) => a.id === instance.event)?.name || "Unknown",
     }));
   } catch (error) {
-    console.error("Error fetching activities:", error);
+    console.error("Error fetching scan instances:", error);
   }
 };
 /*
