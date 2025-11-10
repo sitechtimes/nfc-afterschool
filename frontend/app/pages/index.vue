@@ -412,7 +412,7 @@ const fetchInstances = async () => {
         return dateStr;
       })(),
 
-      time: instance.time.slice(11, -1),
+      time: instance.time.slice(11, 19),
       activity:
         activities.value.find((a) => a.id === instance.event)?.name || "Unknown",
     }));
