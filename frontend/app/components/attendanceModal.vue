@@ -20,7 +20,7 @@
             <td>{{ instance.date }}</td>
             <td>{{ instance.studentName }}</td>
             <td>{{ instance.studentEmail }}</td>
-            <td>{{ instance.studentOsis || 'Unknown' }}</td>
+            <td>{{ instance.studentOsis || "Unknown" }}</td>
             <td>{{ instance.time }}</td>
           </tr>
         </tbody>
@@ -49,10 +49,10 @@ const filteredData = computed(() => {
           .includes(props.searchParams.searchString.toLowerCase()) ||
         item.studentEmail
           ?.toLowerCase()
-            .includes(props.searchParams.searchString.toLowerCase()) ||
-          item.studentOsis
-            ?.toLowerCase()
-            .includes(props.searchParams.searchString.toLowerCase())) &&
+          .includes(props.searchParams.searchString.toLowerCase()) ||
+        item.studentOsis
+          ?.toLowerCase()
+          .includes(props.searchParams.searchString.toLowerCase())) &&
       (props.searchParams.searchType !== "activity" ||
         item.activity
           ?.toLowerCase()
