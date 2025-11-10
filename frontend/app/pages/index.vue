@@ -8,7 +8,7 @@
 
   <div class="p-4 w-full">
     <div class="header flex flex-col text-center gap-2 py-8">
-      <h1 class="text-3xl font-bold">After-School Activity Attendence Logs</h1>
+      <h1 class="text-3xl font-bold">After-School Activity Attendance Logs</h1>
       <p class="max-w-1/2 mx-auto">
         View comprehensive attendance records for all after-school activities,
         clubs, and programs. Track student participation with detailed logs and
