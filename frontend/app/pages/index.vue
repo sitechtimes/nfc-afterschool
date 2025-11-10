@@ -434,12 +434,11 @@ TEMPORARY DATA
 // })) as StudentLookup[];
 onMounted(() => {
   calls();
-  setInterval(calls, 10000);
+  setInterval(() => { calls(); }, 10000);
 });
 
-function calls() {
-  fetchLookup();
-  fetchActivities();
-  fetchInstances();
+async function calls() {
+  await Promise.all([fetchLookup(), fetchActivities()]);
+  await fetchInstances();
 }
 </script>
