@@ -58,7 +58,7 @@
                           searchDate: selectedDate,
                         })
                       "
-                      class="btn btn-sm btn-outline btn-accent btn-wide"
+                      class="btn btn-sm btn-outline btn-wide"
                     >
                       Click to view
                     </button>
@@ -72,7 +72,7 @@
                           searchDate: 'today',
                         })
                       "
-                      class="btn btn-sm btn-outline btn-accent btn-wide"
+                      class="btn btn-sm btn-outline btn-wide"
                     >
                       Click to view
                     </button>
