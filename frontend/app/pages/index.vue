@@ -32,7 +32,9 @@
                 10 activities today
               </div>
             </div>
-            <table class="table table-zebra">
+            <table
+              class="table table-zebra border-separate border-spacing-y-3 w-full"
+            >
               <thead>
                 <tr>
                   <th>Activity</th>
@@ -41,8 +43,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="activity in activities" :key="activity">
-                  <th>{{ activity }}</th>
+                <tr
+                  v-for="activity in activities"
+                  :key="activity"
+                  class="w-full outline rounded-xl"
+                >
+                  <th class="">{{ activity }}</th>
                   <td>
                     <button
                       @click="
@@ -52,7 +58,7 @@
                           searchDate: selectedDate,
                         })
                       "
-                      class="btn btn-sm btn-outline btn-wide"
+                      class="btn btn-sm btn-outline btn-accent btn-wide"
                     >
                       Click to view
                     </button>
@@ -66,7 +72,7 @@
                           searchDate: 'today',
                         })
                       "
-                      class="btn btn-sm btn-outline btn-wide"
+                      class="btn btn-sm btn-outline btn-accent btn-wide"
                     >
                       Click to view
                     </button>
