@@ -26,10 +26,15 @@
             required
           />
           <button
-            class="btn btn-primary btn-block active:scale-101 mt-5"
+            class="btn btn-secondary btn-outline btn-block active:scale-101 mt-5 text-black"
             type="submit"
           >
             Login
+            <img
+              src="/icons/login.svg"
+              class="h-4 opacity-100"
+              alt="Search icon"
+            />
           </button>
         </form>
       </div>
