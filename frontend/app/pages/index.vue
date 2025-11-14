@@ -8,10 +8,12 @@
   <div class="p-4 w-full">
     <button
       @click="userStore.clearUser"
-      class="absolute top-0 left-0 w-10 btn btn-primary"
+      class="absolute top-3 right-3 btn btn-sm md:btn-md rounded-lg transition-transform duration-200 btn-outline"
     >
-      test logout
+      <img src="/icons/logout.svg" class="h-4 opacity-90" alt="Search icon" />
+      Logout
     </button>
+    <div />
     <div class="header flex flex-col text-center gap-2 py-8">
       <h1 class="text-3xl font-bold">After-School Activity Attendence Logs</h1>
       <p class="max-w-1/2 mx-auto">
@@ -25,22 +27,28 @@
         <div class="space-y-6 card card-md overflow-x-auto">
           <div class="card-body">
             <div class="flex justify-between">
-              <h2 class="card-title">Avatar Attendance Records</h2>
+              <h2 class="card-title">Student Attendance Records</h2>
               <div class="badge badge-ghost hidden md:block">
                 10 activities today
               </div>
             </div>
-            <table class="table table-zebra">
+            <table
+              class="table table-zebra border-separate border-spacing-y-3 w-full"
+            >
               <thead>
                 <tr>
                   <th>Activity</th>
-                  <th>Full Attendance Records</th>
+                  <th>Attendance Records</th>
                   <th>Today's Attendance</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="activity in activities" :key="activity">
-                  <th>{{ activity }}</th>
+                <tr
+                  v-for="activity in activities"
+                  :key="activity"
+                  class="w-full rounded-xl"
+                >
+                  <th class="">{{ activity }}</th>
                   <td>
                     <button
                       @click="
