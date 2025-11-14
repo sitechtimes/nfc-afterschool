@@ -38,6 +38,8 @@
               <thead>
                 <tr>
                   <th>Activity</th>
+                  <th>Location</th>
+                  <!-- So I dont forget make smaller width -->
                   <th>Attendance Records</th>
                   <th>Today's Attendance</th>
                 </tr>
@@ -49,6 +51,7 @@
                   class="w-full rounded-xl"
                 >
                   <th class="">{{ activity }}</th>
+                  <td>Room test</td>
                   <td>
                     <button
                       @click="
