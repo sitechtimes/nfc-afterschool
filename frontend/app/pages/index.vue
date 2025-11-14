@@ -46,7 +46,7 @@
                 <tr
                   v-for="activity in activities"
                   :key="activity"
-                  class="w-full outline rounded-xl"
+                  class="w-full rounded-xl"
                 >
                   <th class="">{{ activity }}</th>
                   <td>
