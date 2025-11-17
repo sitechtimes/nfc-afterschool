@@ -27,19 +27,22 @@
         <div class="space-y-6 card card-md overflow-x-auto">
           <div class="card-body">
             <div class="flex justify-between">
-              <h2 class="card-title">Student Attendance Records</h2>
-              <div class="badge badge-ghost hidden md:block">
+              <h2 class="card-title flex items-center gap-2 mb-4">
+                <img
+                  src="/icons/personIcon.svg"
+                  class="h-4 opacity-75"
+                  alt="Search icon"
+                />Student Attendance Records
+              </h2>
+              <div class="badge badge-ghost hidden md:block font-semibold">
                 10 activities today
               </div>
             </div>
-            <table
-              class="table table-zebra border-separate border-spacing-y-3 w-full"
-            >
+            <table class="table table-zebra border-spacing-y-3 w-full">
               <thead>
                 <tr>
                   <th>Activity</th>
                   <th>Location</th>
-                  <!-- So I dont forget make smaller width -->
                   <th>Attendance Records</th>
                   <th>Today's Attendance</th>
                 </tr>
@@ -61,7 +64,7 @@
                           searchDate: selectedDate,
                         })
                       "
-                      class="btn btn-sm btn-outline btn-wide"
+                      class="btn btn-sm outline outline-offset-2 btn-wide"
                     >
                       Click to view
                     </button>
@@ -75,7 +78,7 @@
                           searchDate: 'today',
                         })
                       "
-                      class="btn btn-sm btn-outline btn-wide"
+                      class="btn btn-sm outline outline-offset-2 btn-wide"
                     >
                       Click to view
                     </button>
