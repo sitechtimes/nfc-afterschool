@@ -82,7 +82,7 @@
             <h2 class="card-title">Manual Student Input</h2>
           </div>
           <div class="card-actions justify-center pb-5">
-            <EnterStudentInfo />
+            <EnterStudentInfo :students="students" />
           </div>
         </div>
         <div class="space-y-6 card card-md mb-1">

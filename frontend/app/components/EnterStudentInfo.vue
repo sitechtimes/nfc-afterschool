@@ -42,12 +42,27 @@
           </ul>
         </div>
         <label class="flex flex-col text-gray-700">
-          Name:
-          <input v-model="studentName" type="text" required class="input" />
-        </label>
-        <label class="flex flex-col text-gray-700">
-          Student Email:
-          <input type="email" v-model="studentEmail" required class="input" />
+          Name/email/osis:
+          <input v-model="studentSearch" type="text" required class="input" />
+          <div
+            v-if="filteredStudents.length > 0 && studentSearch"
+            class="absolute top-full left-0 right-0 bg-white border-2 border-gray-200 rounded-xl mt-2 max-h-64 overflow-y-auto z-20 shadow-xl"
+          >
+            <div
+              v-for="student in filteredStudents"
+              :key="student.email"
+              @click="
+                selectedStudent = student;
+                studentSearch = '';
+              "
+              class="p-4 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors"
+            >
+              <div class="font-semibold text-gray-800">
+                {{ student.name }}
+              </div>
+              <div class="text-sm text-gray-500">{{ student.email }}</div>
+            </div>
+          </div>
         </label>
         <div class="flex justify-end gap-2">
           <button class="btn btn-md">Submit</button>
@@ -69,8 +84,7 @@ const todayFormatted = `${
 const studentInfoScreenOpen = ref(false);
 const dialog = ref();
 const studentActivity = ref("");
-const studentName = ref("");
-const studentEmail = ref("");
+const studentSearch = ref("");
 const searchQuery = ref("");
 const listOfActivities = useActivityStore();
 const initialActivites = listOfActivities.activities.slice(0, 4);
@@ -78,6 +92,30 @@ const searchResults = computed(() => {
   if (!searchQuery.value.trim()) return initialActivites;
   return listOfActivities.activities.filter((a: string) =>
     a.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+});
+
+const selectedStudent = ref<{
+  name: string;
+  email: string;
+  display: string;
+} | null>(null);
+
+const props = defineProps<{
+  students: Array<{ name: string; email: string }>;
+}>();
+
+const students = toRef(props, "students");
+
+const filteredStudents = computed(() => {
+  if (!Array.isArray(students.value) || studentSearch.value == "") return [];
+  const unfilteredStudents = students.value.map((student) => ({
+    name: student.name,
+    email: student.email,
+    display: `${student.name} | ${student.email}`,
+  }));
+  return unfilteredStudents.filter((student) =>
+    student.display.includes(studentSearch.value)
   );
 });
 
@@ -89,24 +127,20 @@ function openInfoEnterPage() {
   studentInfoScreenOpen.value = true;
 }
 function closeWithoutData() {
-  studentName.value = "";
-  studentEmail.value = "";
+  studentSearch.value = "";
   studentActivity.value = "";
   dialog.value.close();
   studentInfoScreenOpen.value = false;
 }
 function submitStudentData() {
-  studentName.value = studentName.value.trim();
   const studentData = {
-    name: studentName.value,
-    email: studentEmail.value,
+    name: selectedStudent.value?.name,
+    email: selectedStudent.value?.email,
     activity: studentActivity.value,
     date: todayFormatted,
   };
   studentActivity.value = "";
-  studentName.value = "";
-  studentEmail.value = "";
-  studentActivity.value = "";
+  studentSearch.value = "";
   studentInfoScreenOpen.value = false;
   dialog.value.close();
 }
