@@ -14,7 +14,7 @@ from rest_framework.decorators import action
 
 BASE_URL = settings.NFC_BASE_URL
 
-
+#this is under the assumption that im fetching from nfc and you're not sending data to us
 def fetch_remote(endpoint):
     url = f"{settings.REMOTE_BASE_URL}{endpoint}"
     response = requests.get(url)
@@ -84,9 +84,9 @@ class StudentViewSet(viewsets.ModelViewSet, BaseSyncView):
         return self.syncData(request)
 
 
-class EventViewSet(BaseSyncView,viewsets.ModelViewSet):
+class ActivtyViewSet(BaseSyncView,viewsets.ModelViewSet):
     queryset = Event.objects.all()
-    serializer_class = EventSerializer
+    serializer_class = ActivitySerializer
     filterset_class = EventFilter
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     permission_classes = [IsAdminUser]
@@ -96,29 +96,5 @@ class EventViewSet(BaseSyncView,viewsets.ModelViewSet):
         return self.syncData(request)
 
 
-class DeviceViewSet(BaseSyncView, viewsets.ModelViewSet):
-    queryset = Device.objects.all()
-    serializer_class = DeviceSerializer
-    filterset_class = DeviceFilter
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    permission_classes = [IsAdminUser]
-    model = Device
-    fetch_url = "devices/list/"
-
-    @action(detail=False, methods=["post"])
-    def sync(self, request):
-        return self.syncData(request)
 
 
-class ScanInstanceViewSet(BaseSyncView, viewsets.ModelViewSet):
-    queryset = ScanInstance.objects.all()
-    serializer_class = ScanInstanceSerializer
-    filterset_class = ScanInstanceFilter
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    permission_classes = [IsAdminUser]
-    model = ScanInstance
-    fetch_url = "connect/list/scans/"
-
-    @action(detail=False, methods=["post"])
-    def sync(self, request):
-        return self.syncData(request)

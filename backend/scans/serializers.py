@@ -21,20 +21,10 @@ class UserSerializer(serializers.ModelSerializer):
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ["id", "name", "homeroom", "gradYear", "email", "caassID"]
+        fields = ["id", "name", "homeroom", "grad_year", "email", "caassID"]
 
-
-class ScanInstanceSerializer(serializers.ModelSerializer):
-    student = StudentSerializer()
-
-    class Meta:
-        model = ScanInstance
-        fields = ["id", "student", "time"]
-
-
-class EventSerializer(serializers.ModelSerializer):
+class ActivitySerializer(serializers.ModelSerializer):
     allowed = StudentSerializer(many=True, read_only=True)
-    scans = ScanInstanceSerializer(many=True, read_only=True)
 
     class Meta:
         model = Event
@@ -43,23 +33,6 @@ class EventSerializer(serializers.ModelSerializer):
             "name",
             "time_start",
             "time_end",
-            "scans",
-            "restricted",
-            "allowed",
-            "type",
         ]
 
 
-class DeviceSerializer(serializers.ModelSerializer):
-    assigned_to = EventSerializer(read_only=True)
-
-    class Meta:
-        model = Device
-        fields = [
-            "id",
-            "last_known_ip",
-            "last_seen",
-            "assigned_to",
-            "device_type",
-            "online",
-        ]

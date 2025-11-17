@@ -10,9 +10,7 @@ from .views import *
 router = DefaultRouter()
 router.register(r"students", StudentViewSet, basename="student")
 router.register(r"users", UserViewSet, basename="user")
-router.register(r"events", EventViewSet, basename="event")
-router.register(r"devices", DeviceViewSet, basename="device")
-router.register(r"scan-instances", ScanInstanceViewSet, basename="scan-instance")
+router.register(r"activities", ActivtyViewSet, basename="event")
 urlpatterns = [
     path("", include(router.urls)),
     path(
