@@ -1,97 +1,102 @@
 <template>
   <div class="relative w-full px-6">
-    <div
-      v-if="studentInfoScreenOpen"
-      class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
-    ></div>
     <dialog
       v-if="studentInfoScreenOpen"
-      ref="dialog"
-      id="dialog"
-      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 fieldset rounded-box p-4 w-xs"
+      class="modal modal-open cursor-pointer"
+      @click.self="closeWithoutData"
     >
-      <form
-        method="dialog"
-        @submit.prevent="submitStudentData"
-        class="flex flex-col gap-4"
-      >
-        <label class="flex flex-col text-secondary-content"> Activity </label>
-        <div class="dropdown w-full">
-          <div tabindex="0" role="button" class="btn m-1 rounded-box w-full">
-            {{ studentActivity || "Select Activity" }}
+      <div class="modal-box cursor-default max-w-md overflow-visible">
+        <form
+          method="dialog"
+          @submit.prevent="submitStudentData"
+          class="flex flex-col gap-4"
+        >
+          <label class="flex flex-col text-secondary-content"> Activity </label>
+          <div class="dropdown w-full">
+            <div tabindex="0" role="button" class="btn m-1 rounded-box w-full">
+              {{ studentActivity || "Select Activity" }}
+            </div>
+            <ul
+              tabindex="-1"
+              class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm overflow-visible"
+            >
+              <input
+                v-model="activitySearch"
+                type="text"
+                placeholder="Search..."
+                class="input input-sm mb-2 w-full"
+              />
+              <li v-for="activity in filteredActivities" :key="activity">
+                <button @click.prevent="choiceSelector(activity)">
+                  {{ activity }}
+                </button>
+              </li>
+              <li
+                v-if="!filteredActivities.length"
+                class="text-center text-sm opacity-50"
+              >
+                No results
+              </li>
+            </ul>
           </div>
-          <ul
-            tabindex="-1"
-            class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+          <label
+            v-if="!selectedStudent"
+            class="flex flex-col text-gray-700 relative"
           >
+            Name/Email:
             <input
-              v-model="activitySearch"
+              v-model="studentSearch"
               type="text"
-              placeholder="Search..."
-              class="input input-sm mb-2 w-full"
+              required
+              class="input w-full"
             />
-            <li v-for="activity in filteredActivities" :key="activity">
-              <button @click.prevent="choiceSelector(activity)">
-                {{ activity }}
-              </button>
-            </li>
-            <li
-              v-if="!filteredActivities.length"
-              class="text-center text-sm opacity-50"
-            >
-              No results
-            </li>
-          </ul>
-        </div>
-        <label v-if="!selectedStudent" class="flex flex-col text-gray-700">
-          Name/Email:
-          <input v-model="studentSearch" type="text" required class="input" />
-          <div
-            v-if="filteredStudents.length > 0 && studentSearch"
-            class="absolute top-full left-0 right-0 bg-white border-2 border-gray-200 rounded-xl mt-2 max-h-64 overflow-y-auto z-20 shadow-xl"
-          >
             <div
-              v-for="student in filteredStudents"
-              :key="student.email"
-              @click="
-                selectedStudent = student;
-                studentSearch = '';
-              "
-              class="p-4 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors"
+              v-if="filteredStudents.length > 0 && studentSearch"
+              class="absolute top-full left-0 right-0 bg-white border-2 border-gray-200 rounded-xl mt-2 max-h-48 overflow-y-auto z-[9999] shadow-xl"
             >
-              <div class="font-semibold text-gray-800">
-                {{ student.name }}
-              </div>
-              <div class="text-sm text-gray-500">{{ student.email }}</div>
-            </div>
-          </div>
-        </label>
-        <div v-if="selectedStudent">
-          <div
-            class="flex items-center gap-3 justify-between bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200"
-          >
-            <div>
-              <div class="font-semibold text-gray-800">
-                {{ selectedStudent.name }}
-              </div>
-              <div class="text-sm text-gray-600">
-                {{ selectedStudent.email }}
+              <div
+                v-for="student in filteredStudents"
+                :key="student.email"
+                @click="
+                  selectedStudent = student;
+                  studentSearch = '';
+                "
+                class="p-4 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors"
+              >
+                <div class="font-semibold text-gray-800">
+                  {{ student.name }}
+                </div>
+                <div class="text-sm text-gray-500">{{ student.email }}</div>
               </div>
             </div>
-            <button
-              @click="selectedStudent = null"
-              class="w-8 h-8 rounded-full hover:bg-red-100 hover:cursor-pointer flex items-center justify-center transition-colors"
-              title="Remove student"
+          </label>
+          <div v-if="selectedStudent">
+            <div
+              class="flex items-center gap-3 justify-between bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200"
             >
-              <img src="/icons/trash.svg" class="w-5 h-5" />
-            </button>
+              <div>
+                <div class="font-semibold text-gray-800">
+                  {{ selectedStudent.name }}
+                </div>
+                <div class="text-sm text-gray-600">
+                  {{ selectedStudent.email }}
+                </div>
+              </div>
+              <button
+                @click="selectedStudent = null"
+                class="w-8 h-8 rounded-full hover:bg-red-100 hover:cursor-pointer flex items-center justify-center transition-colors"
+                title="Remove student"
+              >
+                <img src="/icons/trash.svg" class="w-5 h-5" />
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="flex justify-end gap-2">
-          <button class="btn btn-md">Submit</button>
-          <button class="btn btn-md" @click="closeWithoutData">Close</button>
-        </div>
-      </form>
+          <div class="flex justify-end gap-2">
+            <button class="btn btn-md">Submit</button>
+            <button class="btn btn-md" @click="closeWithoutData">Close</button>
+          </div>
+        </form>
+      </div>
     </dialog>
     <button class="btn btn-outline btn-block" @click="openInfoEnterPage">
       Enter student information
@@ -110,6 +115,15 @@ const studentActivity = ref("");
 const studentSearch = ref("");
 const activitySearch = ref("");
 const listOfActivities = useActivityStore();
+
+function onKeydown(e: KeyboardEvent) {
+  if (e?.key === "Escape" || e?.code === "Escape") {
+    closeWithoutData();
+  }
+}
+
+onMounted(() => window.addEventListener("keydown", onKeydown));
+onBeforeUnmount(() => window.removeEventListener("keydown", onKeydown));
 
 const filteredActivities = computed(() => {
   if (!activitySearch.value.trim())
@@ -155,7 +169,6 @@ function openInfoEnterPage() {
 function closeWithoutData() {
   studentSearch.value = "";
   studentActivity.value = "";
-  dialog.value.close();
   studentInfoScreenOpen.value = false;
 }
 function submitStudentData() {
@@ -168,6 +181,5 @@ function submitStudentData() {
   studentActivity.value = "";
   studentSearch.value = "";
   studentInfoScreenOpen.value = false;
-  dialog.value.close();
 }
 </script>
