@@ -22,7 +22,7 @@
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
       <div class="lg:col-span-3">
-        <div class="space-y-1 card card-md overflow-x-auto">
+        <div class="space-y-6 card card-md overflow-x-auto">
           <div class="card-body">
             <div class="flex justify-between">
               <h2 class="card-title">Avatar Attendance Records</h2>
@@ -75,7 +75,6 @@
           </div>
         </div>
       </div>
-
       <div class="col-span-1 flex flex-col gap-6">
         <div class="card card-md mb-1">
           <div class="card-body">
@@ -275,7 +274,6 @@ const activities = [
   "Swimming Practice",
   "Football Practice",
 ];
-
 const userStore = useUserStore();
 
 const filteredStudents = computed(() => {
