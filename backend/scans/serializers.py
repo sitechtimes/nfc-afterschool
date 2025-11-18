@@ -1,4 +1,5 @@
-from .models import Student, Device, Event, ScanInstance, User
+from .models import Student,Activity
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
 
@@ -24,10 +25,9 @@ class StudentSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "homeroom", "grad_year", "email", "caassID"]
 
 class ActivitySerializer(serializers.ModelSerializer):
-    allowed = StudentSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Event
+        model = Activity
         fields = [
             "id",
             "name",

@@ -10,7 +10,7 @@ from .views import *
 router = DefaultRouter()
 router.register(r"students", StudentViewSet, basename="student")
 router.register(r"users", UserViewSet, basename="user")
-router.register(r"activities", ActivtyViewSet, basename="event")
+router.register(r"activities", ActivityViewSet, basename="activity")
 urlpatterns = [
     path("", include(router.urls)),
     path(
@@ -23,4 +23,7 @@ urlpatterns = [
         TokenRefreshView.as_view(permission_classes=[AllowAny]),
         name="token_refresh",
     ),
+    path("attendance/", AttendenceView.as_view(), name="attendance"),
+    path("create-scan/", CreateScan.as_view(), name="create_scan"),
+    path("create-activity/", CreateActivity.as_view(), name="create_activity"),
 ]

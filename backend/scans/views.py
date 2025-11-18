@@ -14,12 +14,63 @@ from rest_framework.decorators import action
 
 BASE_URL = settings.NFC_BASE_URL
 
-#this is under the assumption that im fetching from nfc and you're not sending data to us
+
+# this is under the assumption that im fetching from nfc and you're not sending data to us
 def fetch_remote(endpoint):
     url = f"{settings.REMOTE_BASE_URL}{endpoint}"
     response = requests.get(url)
     response.raise_for_status()
     return response.json()
+
+
+class AttendenceView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+        try:
+            data = fetch_remote("scan-instances/list/")
+            filtered_data = [
+                entry for entry in data if entry.get("event_type") == "afterschool"
+            ]
+            return Response(filtered_data, status=200)
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=500)
+
+
+# ben said he wanted a wya to mually make these things as well
+
+
+class CreateScan(APIView):
+    permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        payload = request.data
+        url = f"{settings.NFC_BASE_URL}scan-instances/create/"
+        try:
+            response = requests.post(url, json=payload)
+            response.raise_for_status()
+            return Response(response.json())
+        except requests.HTTPError as e:
+            return Response({"error": str(e)}, status=e.response.status_code)
+
+
+class CreateActivity(APIView):
+    permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        payload = {
+            "name": request.data.get("name"),
+            "time_start": request.data.get("time_start"),
+            "time_end": request.data.get("time_end"),
+            "type": "afterschool",
+        }
+        url = f"{BASE_URL}events/create/"
+        try:
+            response = requests.post(url, json=payload)
+            response.raise_for_status()
+            return Response(response.json())
+        except requests.HTTPError as e:
+            return Response({"error": str(e)}, status=e.response.status_code)
 
 
 class BaseSyncView(APIView):
@@ -40,7 +91,6 @@ class BaseSyncView(APIView):
 
         try:
             data = fetch_remote(self.fetch_url)
-
             for item in data:
                 instance = None
                 obj_id = item.get("id")
@@ -49,7 +99,7 @@ class BaseSyncView(APIView):
                     try:
                         instance = self.model.objects.get(id=obj_id)
                     except self.model.DoesNotExist:
-                        instance = None  
+                        instance = None
 
                 serializer = self.serializer_class(instance=instance, data=item)
                 serializer.is_valid(raise_exception=True)
@@ -84,17 +134,15 @@ class StudentViewSet(viewsets.ModelViewSet, BaseSyncView):
         return self.syncData(request)
 
 
-class ActivtyViewSet(BaseSyncView,viewsets.ModelViewSet):
-    queryset = Event.objects.all()
+class ActivityViewSet(BaseSyncView, viewsets.ModelViewSet):
+    queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
-    filterset_class = EventFilter
+    filterset_class = ActivityFilter
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     permission_classes = [IsAdminUser]
+    model = Activity
+    fetch_url = "events/list/"
 
     @action(detail=False, methods=["post"])
     def sync(self, request):
         return self.syncData(request)
-
-
-
-
