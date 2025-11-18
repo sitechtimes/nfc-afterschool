@@ -24,7 +24,7 @@
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
       <div class="lg:col-span-3">
-        <div class="space-y-6 card card-md overflow-x-auto">
+        <div class="space-y-6 card card-md overflow-x-auto bg-prmiary">
           <div class="card-body">
             <div class="flex justify-between">
               <h2 class="card-title flex items-center gap-2 mb-4">
@@ -38,23 +38,27 @@
                 10 activities today
               </div>
             </div>
-            <table class="table table-zebra border-spacing-y-3 w-full">
-              <thead>
+            <table class="table border-spacing-y-3 w-full bg-prmiary">
+              <thead class="border-b border-gray-300">
                 <tr>
-                  <th>Activity</th>
-                  <th>Location</th>
-                  <th>Attendance Records</th>
-                  <th>Today's Attendance</th>
+                  <th class="text-lg font-bold text-black">Activity</th>
+                  <th class="text-lg font-bold text-black">Location</th>
+                  <th class="text-lg font-bold text-black">
+                    Attendance Records
+                  </th>
+                  <th class="text-lg font-bold text-black">
+                    Today's Attendance
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr
                   v-for="activity in activities"
                   :key="activity"
-                  class="w-full rounded-xl"
+                  class="w-full rounded-xl border-b-2 border-gray-300"
                 >
-                  <th class="">{{ activity }}</th>
-                  <td>Room test</td>
+                  <th>{{ activity }}</th>
+                  <td class="text-black font-normal">Random Room</td>
                   <td>
                     <button
                       @click="
