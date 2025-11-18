@@ -8,7 +8,7 @@
       v-if="studentInfoScreenOpen"
       ref="dialog"
       id="dialog"
-      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 fieldset rounded-box border p-4 border-primary w-xs"
+      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 fieldset rounded-box p-4 w-xs"
     >
       <form
         method="dialog"
@@ -16,7 +16,7 @@
         class="flex flex-col gap-4"
       >
         <label class="flex flex-col text-secondary-content"> Activity </label>
-        <div class="dropdown dropdown-right w-full">
+        <div class="dropdown w-full">
           <div tabindex="0" role="button" class="btn m-1 rounded-box w-full">
             {{ studentActivity || "Select Activity" }}
           </div>
@@ -25,24 +25,26 @@
             class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
           >
             <input
-              v-model="searchQuery"
+              v-model="activitySearch"
               type="text"
               placeholder="Search..."
               class="input input-sm mb-2 w-full"
             />
-            <li v-for="activity in searchResults" :key="activity">
-              <button @click="choiceSelector(activity)">{{ activity }}</button>
+            <li v-for="activity in filteredActivities" :key="activity">
+              <button @click.prevent="choiceSelector(activity)">
+                {{ activity }}
+              </button>
             </li>
             <li
-              v-if="!searchResults.length"
+              v-if="!filteredActivities.length"
               class="text-center text-sm opacity-50"
             >
               No results
             </li>
           </ul>
         </div>
-        <label class="flex flex-col text-gray-700">
-          Name/email/osis:
+        <label v-if="!selectedStudent" class="flex flex-col text-gray-700">
+          Name/Email:
           <input v-model="studentSearch" type="text" required class="input" />
           <div
             v-if="filteredStudents.length > 0 && studentSearch"
@@ -64,6 +66,27 @@
             </div>
           </div>
         </label>
+        <div v-if="selectedStudent">
+          <div
+            class="flex items-center gap-3 justify-between bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200"
+          >
+            <div>
+              <div class="font-semibold text-gray-800">
+                {{ selectedStudent.name }}
+              </div>
+              <div class="text-sm text-gray-600">
+                {{ selectedStudent.email }}
+              </div>
+            </div>
+            <button
+              @click="selectedStudent = null"
+              class="w-8 h-8 rounded-full hover:bg-red-100 hover:cursor-pointer flex items-center justify-center transition-colors"
+              title="Remove student"
+            >
+              <img src="/icons/trash.svg" class="w-5 h-5" />
+            </button>
+          </div>
+        </div>
         <div class="flex justify-end gap-2">
           <button class="btn btn-md">Submit</button>
           <button class="btn btn-md" @click="closeWithoutData">Close</button>
@@ -85,14 +108,17 @@ const studentInfoScreenOpen = ref(false);
 const dialog = ref();
 const studentActivity = ref("");
 const studentSearch = ref("");
-const searchQuery = ref("");
+const activitySearch = ref("");
 const listOfActivities = useActivityStore();
-const initialActivites = listOfActivities.activities.slice(0, 4);
-const searchResults = computed(() => {
-  if (!searchQuery.value.trim()) return initialActivites;
-  return listOfActivities.activities.filter((a: string) =>
-    a.toLowerCase().includes(searchQuery.value.toLowerCase())
-  );
+
+const filteredActivities = computed(() => {
+  if (!activitySearch.value.trim())
+    return listOfActivities.activities.slice(0, 4);
+  return listOfActivities.activities
+    .filter((a: string) =>
+      a.toLowerCase().includes(activitySearch.value.toLowerCase())
+    )
+    .slice(0, 4);
 });
 
 const selectedStudent = ref<{
