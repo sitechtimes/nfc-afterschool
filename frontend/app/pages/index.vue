@@ -68,7 +68,7 @@
                           searchDate: selectedDate,
                         })
                       "
-                      class="btn btn-sm outline outline-offset-2 btn-wide"
+                      class="btn btn-sm outline outline-offset-2 bg-transparent btn-wide hover:bg-black hover:text-white transition-colors duration-200"
                     >
                       Click to view
                     </button>
@@ -82,7 +82,7 @@
                           searchDate: 'today',
                         })
                       "
-                      class="btn btn-sm outline outline-offset-2 btn-wide"
+                      class="btn btn-sm outline outline-offset-2 bg-transparent btn-wide hover:bg-black hover:text-white transition-colors duration-200"
                     >
                       Click to view
                     </button>
@@ -229,13 +229,12 @@
                 <label class="text-sm font-semibold text-base-content/70">
                   Filter by date
                 </label>
-                <div class="w-full flex gap-2">
-                  <input
-                    v-model="selectedDate"
-                    type="date"
-                    class="input input-bordered"
-                  />
-                </div>
+                <button @click="PRINTHIS">CLICK</button>
+                <input />
+                <calendar-date v-model="selectedDate">
+                  <calendar-month></calendar-month>
+                </calendar-date>
+                <input />
               </div>
               <p
                 v-if="!isDateSelected"
@@ -253,6 +252,7 @@
 
 <script setup lang="ts">
 import fake_data from "../../public/fake_data.json";
+import "cally";
 const showDataModal = ref(false);
 const studentSearch = ref("");
 const searchError = ref("");
@@ -285,7 +285,9 @@ const activities = [
   "Football Practice",
 ];
 const userStore = useUserStore();
-
+function PRINTHIS() {
+  console.log(selectedDate.value);
+}
 const filteredStudents = computed(() => {
   if (!Array.isArray(students.value) || studentSearch.value == "") return [];
   const unfilteredStudents = students.value.map((student) => ({
