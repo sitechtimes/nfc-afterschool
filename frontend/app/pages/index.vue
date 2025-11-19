@@ -76,6 +76,14 @@
         </div>
       </div>
       <div class="col-span-1 flex flex-col gap-6">
+        <div class="card card-md mb-1">
+          <div class="card-body">
+            <h2 class="card-title">Manual Student Input</h2>
+          </div>
+          <div class="card-actions justify-center pb-5">
+            <EnterStudentInfo :students="students" />
+          </div>
+        </div>
         <div class="space-y-6 card card-md mb-1">
           <div class="card-body">
             <h2 class="card-title mb-4">
