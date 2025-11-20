@@ -8,10 +8,12 @@
   <div class="p-4 w-full">
     <button
       @click="userStore.clearUser"
-      class="absolute top-0 left-0 w-10 btn btn-primary"
+      class="absolute top-3 right-3 btn btn-sm md:btn-md rounded-lg transition-transform duration-200 btn-outline"
     >
-      test logout
+      <img src="/icons/logout.svg" class="h-4 opacity-90" alt="Search icon" />
+      Logout
     </button>
+    <div />
     <div class="header flex flex-col text-center gap-2 py-8">
       <h1 class="text-3xl font-bold">After-School Activity Attendence Logs</h1>
       <p class="max-w-1/2 mx-auto">
@@ -22,25 +24,41 @@
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
       <div class="lg:col-span-3">
-        <div class="space-y-6 card card-md overflow-x-auto">
+        <div class="space-y-6 card card-md overflow-x-auto bg-prmiary">
           <div class="card-body">
             <div class="flex justify-between">
-              <h2 class="card-title">Avatar Attendance Records</h2>
-              <div class="badge badge-ghost hidden md:block">
+              <h2 class="card-title flex items-center gap-2 mb-4">
+                <img
+                  src="/icons/personIcon.svg"
+                  class="h-4 opacity-75"
+                  alt="Search icon"
+                />Student Attendance Records
+              </h2>
+              <div class="badge badge-ghost hidden md:block font-semibold">
                 10 activities today
               </div>
             </div>
-            <table class="table table-zebra">
-              <thead>
+            <table class="table border-spacing-y-3 w-full bg-prmiary">
+              <thead class="border-b border-gray-300">
                 <tr>
-                  <th>Activity</th>
-                  <th>Full Attendance Records</th>
-                  <th>Today's Attendance</th>
+                  <th class="text-lg font-bold text-black">Activity</th>
+                  <th class="text-lg font-bold text-black">Location</th>
+                  <th class="text-lg font-bold text-black">
+                    Attendance Records
+                  </th>
+                  <th class="text-lg font-bold text-black">
+                    Today's Attendance
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="activity in activities" :key="activity">
+                <tr
+                  v-for="activity in activities"
+                  :key="activity"
+                  class="w-full rounded-xl border-b-2 border-gray-300"
+                >
                   <th>{{ activity }}</th>
+                  <td class="text-black font-normal">Random Room</td>
                   <td>
                     <button
                       @click="
@@ -50,7 +68,7 @@
                           searchDate: selectedDate,
                         })
                       "
-                      class="btn btn-sm btn-outline btn-wide"
+                      class="btn btn-sm outline outline-offset-2 bg-transparent btn-wide hover:bg-black hover:text-white transition-colors duration-200"
                     >
                       Click to view
                     </button>
@@ -64,7 +82,7 @@
                           searchDate: 'today',
                         })
                       "
-                      class="btn btn-sm btn-outline btn-wide"
+                      class="btn btn-sm outline outline-offset-2 bg-transparent btn-wide hover:bg-black hover:text-white transition-colors duration-200"
                     >
                       Click to view
                     </button>
@@ -215,16 +233,41 @@
                   </button>
                 </div>
               </form>
-              <div v-if="isDateSelected" class="card w-full p-6 space-y-4">
+              <div v-if="isDateSelected" class="w-full p-6 space-y-4">
                 <label class="text-sm font-semibold text-base-content/70">
                   Filter by date
                 </label>
-                <div class="w-full flex gap-2">
-                  <input
-                    v-model="selectedDate"
-                    type="date"
-                    class="input input-bordered"
-                  />
+                <div class="w-full overflow-hidden max-w-full">
+                  <calendar-date
+                    v-model.lazy="selectedDate"
+                    class="cally bg-neutral border border-base-300 shadow-lg rounded-box"
+                  >
+                    <svg
+                      aria-label="Previous"
+                      class="fill-current size-4"
+                      slot="previous"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M15.75 19.5 8.25 12l7.5-7.5"
+                      ></path>
+                    </svg>
+                    <svg
+                      aria-label="Next"
+                      class="fill-current size-4"
+                      slot="next"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                      ></path>
+                    </svg>
+                    <calendar-month></calendar-month>
+                  </calendar-date>
                 </div>
               </div>
               <p
@@ -243,6 +286,7 @@
 
 <script setup lang="ts">
 import fake_data from "../../public/fake_data.json";
+import "cally";
 const showDataModal = ref(false);
 const studentSearch = ref("");
 const searchError = ref("");
