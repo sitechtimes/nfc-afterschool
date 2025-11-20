@@ -225,16 +225,42 @@
                   </button>
                 </div>
               </form>
-              <div v-if="isDateSelected" class="card w-full p-6 space-y-4">
+              <div v-if="isDateSelected" class="w-full p-6 space-y-4">
                 <label class="text-sm font-semibold text-base-content/70">
                   Filter by date
                 </label>
-                <button @click="PRINTHIS">CLICK</button>
-                <input />
-                <calendar-date v-model="selectedDate">
-                  <calendar-month></calendar-month>
-                </calendar-date>
-                <input />
+                <div class="w-full overflow-hidden max-w-full">
+                  <calendar-date
+                    v-model.lazy="selectedDate"
+                    class="cally bg-neutral border border-base-300 shadow-lg rounded-box"
+                  >
+                    <svg
+                      aria-label="Previous"
+                      class="fill-current size-4"
+                      slot="previous"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="M15.75 19.5 8.25 12l7.5-7.5"
+                      ></path>
+                    </svg>
+                    <svg
+                      aria-label="Next"
+                      class="fill-current size-4"
+                      slot="next"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="currentColor"
+                        d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                      ></path>
+                    </svg>
+                    <calendar-month></calendar-month>
+                  </calendar-date>
+                </div>
               </div>
               <p
                 v-if="!isDateSelected"
@@ -285,9 +311,7 @@ const activities = [
   "Football Practice",
 ];
 const userStore = useUserStore();
-function PRINTHIS() {
-  console.log(selectedDate.value);
-}
+
 const filteredStudents = computed(() => {
   if (!Array.isArray(students.value) || studentSearch.value == "") return [];
   const unfilteredStudents = students.value.map((student) => ({
